@@ -1,30 +1,10 @@
+import time
 import speech_recognition as sr
-from gtts import gTTS
-import os
-from dialogue import alarm_dialogue, weather_dialogue, music_dialogue
 from elevenlabs.client import ElevenLabs
 from elevenlabs import play
-import pygame
-
-
-
 
 # Initialize the speech recognition engine
 recognizer = sr.Recognizer()
-
-def tts_init(text, lang="en"):
-    """Initializes the gTTS engine with the provided text and language."""
-    return gTTS(text=text, lang=lang)
-
-def speak(text):
-    """Converts text to speech and plays it."""
-    engine = tts_init(text)
-    engine.save("output.mp3")
-    pygame.mixer.init()
-    pygame.mixer.music.load("output.mp3")
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        continue
 
 def listen():
     """Listens for user input using the microphone and returns recognized text."""
@@ -45,37 +25,39 @@ def listen():
         print("Could not get results from Google Speech Recognition service; {0}".format(e))
         return ""
 
-def main():
-    # Welcome message
-    speak("Hello, I am your voice assistant. How can I assist you today?")
-
-    # Carry out alarm-related dialogue
-    alarm_dialogue()
-
-    # Carry out weather-related dialogue
-    weather_dialogue()
-
-    # Carry out music-related dialogue
-    music_dialogue()
-
-    # Initialize ElevenLabs client
+def generate_and_play_audio(text, voice):
+    """Generates audio using ElevenLabs for the given text and plays it."""
     client = ElevenLabs(api_key="e0c5f7b856cf59ef10a4253335714486")
 
-    # Clone voice if needed
-    voice = client.clone(
-        name="Alex",
-        description="An old American male voice with a slight hoarseness in his throat. Perfect for news",
-        files=["./sample_0.mp3", "./sample_1.mp3", "./sample_2.mp3"],
-    )
-
     # Generate audio using ElevenLabs
-    audio = client.generate(text="Hi! I'm a cloned voice!", voice=voice)
+    audio = client.generate(text=text, voice=voice)
 
     # Play the generated audio
     play(audio)
 
-    # Goodbye message
-    speak("Thank you for using the voice assistant. Goodbye!")
+def main():
+    # Clone voice if needed
+    client = ElevenLabs(api_key="e0c5f7b856cf59ef10a4253335714486")
+    voice = client.clone(
+        name="Qian",
+        description="An old American male voice with a slight hoarseness in his throat. Perfect for news",
+        files=["./recorded_audio.mp3"],
+    )
+
+    # Welcome message
+    generate_and_play_audio("Hello, I am your voice assistant,LUMI. How can I assist you today?", voice)
+
+    # Wait for 15 seconds
+    time.sleep(3)
+
+    # Output alarm-related message
+    generate_and_play_audio("Sure, I will set an alarm for 8 AM.", voice)
+
+    # Wait for another 15 seconds
+    time.sleep(3)
+
+    # Output the alarm time message
+    generate_and_play_audio("The alarm is currently set for 8 AM.", voice)
 
 if __name__ == "__main__":
     main()
