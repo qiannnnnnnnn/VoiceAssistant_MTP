@@ -29,14 +29,12 @@ def generate_and_play_audio(text, voice):
     """Generates audio using ElevenLabs for the given text and plays it."""
     client = ElevenLabs(api_key="e0c5f7b856cf59ef10a4253335714486")
 
-    # Generate audio using ElevenLabs
+    # audio using elevenLabs
     audio = client.generate(text=text, voice=voice)
 
-    # Play the generated audio
     play(audio)
 
 def main():
-    # Clone voice if needed
     client = ElevenLabs(api_key="e0c5f7b856cf59ef10a4253335714486")
     voice = client.clone(
         name="Qian",
@@ -47,16 +45,12 @@ def main():
     # Welcome message
     generate_and_play_audio("Hello, I am your voice assistant,LUMI. How can I assist you today?", voice)
 
-    # Wait for 15 seconds
     time.sleep(3)
 
-    # Output alarm-related message
     generate_and_play_audio("Sure, I will set an alarm for 8 AM.", voice)
 
-    # Wait for another 15 seconds
     time.sleep(3)
 
-    # Output the alarm time message
     generate_and_play_audio("The alarm is currently set for 8 AM.", voice)
 
 if __name__ == "__main__":
