@@ -46,7 +46,6 @@ def main():
     # Carry out weather-related dialogue
     weather_dialogue()
 
-
     # Carry out music-related dialogue
     music_dialogue()
 

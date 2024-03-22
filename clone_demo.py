@@ -8,7 +8,7 @@ client = ElevenLabs(
 
 voice = client.clone(
     name="Qian",
-    description="An old American male voice with a slight hoarseness in his throat. Perfect for news", # 可选
+    description="An old American male voice with a slight hoarseness in his throat. Perfect for news",
     files=["./recorded_audio.mp3"],
 )
 
