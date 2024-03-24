@@ -1,5 +1,6 @@
 import subprocess
 from elevenlabs.client import ElevenLabs
+import os
 from elevenlabs import play
 
 client = ElevenLabs(
@@ -9,15 +10,30 @@ client = ElevenLabs(
 voice = client.clone(
     name="Qian",
     description="An old American male voice with a slight hoarseness in his throat. Perfect for news",
-    files=["./recorded_audio.mp3"],
+    files=["recordings/recorded_audio_2.mp3"],
 )
 
 audio_generator = client.generate(text="Hi! I'm a cloned voice!", voice=voice)
 
-with open("output_audio.mp3", "wb") as f:
+# Check and create output folder if necessary
+if not os.path.exists("output"):
+    os.mkdir("output")
+
+# Save the generated audio to the output folder
+with open(os.path.join("output", "output_audio.mp3"), "wb") as f:
     for chunk in audio_generator:
         f.write(chunk)
 
-# using ffmpeg adjust the pich，asetrate=44100*1.1 表示将音频的采样率增加 10%，atempo=0.9 表示将音频的速度降低 10%，从而改变音频的音高
-subprocess.call(["ffmpeg", "-i", "output_audio.mp3", "-af", "asetrate=44100*1.1,atempo=0.9", "output_pitch_changed.mp3"])
-play("output_pitch_changed.mp3")
+# Modify pitch using ffmpeg (paths adjusted for output folder)
+subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=0.9", os.path.join("output", "output_pitch_changed_1.mp3")])
+
+# Play the generated audio (assuming ffplay is installed)
+subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_1.mp3")])
+
+# Modify pitch using ffmpeg (paths adjusted for output folder)
+subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=1.5", os.path.join("output", "output_pitch_changed_2.mp3")])
+subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_2.mp3")])
+
+# Modify pitch using ffmpeg (paths adjusted for output folder)
+subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=0.5", os.path.join("output", "output_pitch_changed_3.mp3")])
+subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_3.mp3")])

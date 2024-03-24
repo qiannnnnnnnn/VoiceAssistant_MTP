@@ -8,11 +8,9 @@ from dialogue import alarm_dialogue, weather_dialogue, music_dialogue
 recognizer = sr.Recognizer()
 
 def tts_init(text, lang="en"):
-    """Initializes the gTTS engine with the provided text and language."""
     return gTTS(text=text, lang=lang)
 
 def speak(text):
-    """Converts text to speech and plays it."""
     engine = tts_init(text)
     engine.save("output.mp3")
     os.system("mpg321 output.mp3")

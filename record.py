@@ -1,13 +1,14 @@
+import os
 import pyaudio
 import wave
 import subprocess
 
-def record_audio(filename, duration=30, sample_rate=44100, channels=1, chunk=1024, format=pyaudio.paInt16):
+def record_audio(output_dir, duration=30, sample_rate=44100, channels=1, chunk=1024, format=pyaudio.paInt16):
     """
     Record audio from the microphone and save it to a WAV file.
 
     Parameters:
-    - filename: The filename to save the recorded audio to.
+    - output_dir: The directory to save the recorded audio files to.
     - duration: The duration of the recording in seconds (default is 5 seconds).
     - sample_rate: The sample rate of the recording (default is 44100 Hz).
     - channels: The number of audio channels (default is 2 for stereo).
@@ -42,12 +43,22 @@ def record_audio(filename, duration=30, sample_rate=44100, channels=1, chunk=102
     stream.close()
     audio.terminate()
 
+    # Find the next available filename
+    i = 1
+    while True:
+        filename = os.path.join(output_dir, f"recorded_audio_{i}.wav")
+        if not os.path.exists(filename):
+            break
+        i += 1
+
     # Save the recorded audio to a WAV file
     with wave.open(filename, 'wb') as wf:
         wf.setnchannels(channels)
         wf.setsampwidth(audio.get_sample_size(format))
         wf.setframerate(sample_rate)
         wf.writeframes(b''.join(frames))
+
+    return filename
 
 def convert_to_mp3(input_filename, output_filename):
     """
@@ -63,14 +74,19 @@ def convert_to_mp3(input_filename, output_filename):
     subprocess.run(['ffmpeg', '-i', input_filename, '-codec:a', 'libmp3lame', output_filename])
 
 if __name__ == "__main__":
-    # Define the filenames
-    wav_filename = "recorded_audio.wav"
-    mp3_filename = "recorded_audio.mp3"
+    # Define the output directory
+    output_dir = "recordings"
+
+    # Create the output directory if it doesn't exist
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
     # Record audio for 5 seconds (you can adjust the duration if needed)
-    record_audio(wav_filename, duration=5)
+    wav_filename = record_audio(output_dir, duration=30)
 
     # Convert the WAV file to MP3 format
+    mp3_filename = os.path.splitext(wav_filename)[0] + ".mp3"
     convert_to_mp3(wav_filename, mp3_filename)
 
     print(f"Audio recorded and saved as {mp3_filename}")
+
