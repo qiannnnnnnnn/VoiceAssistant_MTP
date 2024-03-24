@@ -1,7 +1,7 @@
 import os
 import pyaudio
 import wave
-
+from flask import current_app as app
 
 def record_audio(output_dir, duration=30, sample_rate=44100, channels=1, chunk=1024, format=pyaudio.paInt16):
     audio = pyaudio.PyAudio()
@@ -13,7 +13,7 @@ def record_audio(output_dir, duration=30, sample_rate=44100, channels=1, chunk=1
                         input=True,
                         frames_per_buffer=chunk)
 
-    print("Recording...")
+    app.logger.info("Recording...")
 
     frames = []
 
@@ -22,7 +22,7 @@ def record_audio(output_dir, duration=30, sample_rate=44100, channels=1, chunk=1
         data = stream.read(chunk)
         frames.append(data)
 
-    print("Finished recording.")
+    app.logger.info("Finished recording.")
 
     # Stop and close the stream
     stream.stop_stream()
@@ -45,17 +45,3 @@ def record_audio(output_dir, duration=30, sample_rate=44100, channels=1, chunk=1
         wf.writeframes(b''.join(frames))
 
     return filename
-
-
-if __name__ == "__main__":
-    # Define the output directory
-    output_dir = "recordings"
-
-    # Create the output directory if it doesn't exist
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    # Record audio for 30 seconds (you can adjust the duration if needed)
-    wav_filename = record_audio(output_dir, duration=30)
-
-    print(f"Audio recorded and saved as {wav_filename}")

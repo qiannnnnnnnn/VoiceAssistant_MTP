@@ -13,17 +13,25 @@ client = ElevenLabs(
     api_key="e0c5f7b856cf59ef10a4253335714486",  # Replace with your API key
 )
 
+
+
+
+'''
+生成次数用完了暂时先这样，不克隆新的
 # Clone the voice once
 voice = client.clone(
     name="Qian",
     description="dialogue_voice test",
     files=["output/output_pitch_changed_1.mp3"],  # Use the provided audio file path
 )
+'''
+
+voice_name = "Qian_pitch1"
 
 
-def play_generated_audio(text):
+def play_generated_audio(text, voice_name="Qian"):
     try:
-        audio_generator = client.generate(text=text, voice=voice)
+        audio_generator = client.generate(text=text, voice=voice_name)
 
         # Use subprocess.Popen() to play the generated audio
         ffplay_process = subprocess.Popen(["ffplay", "-autoexit", "-nodisp", "-"], stdin=subprocess.PIPE,
@@ -136,17 +144,21 @@ def music_dialogue():
     text, audio_file = listen()
 
     # Check if the user wants to continue
+    if "yes" in text or "continue" in text:
+        music_dialogue()
+    else:
+        speak("Okay, enjoy your music")
 
 
 def main():
     # Welcome message
-    speak("Hello, I am your voice assistant Lumi. How can I assist you today?")
+    play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?")
 
     # Proceed with music-related dialogue
     music_dialogue()
 
     # Goodbye message
-    speak("Thank you for talking with me. I wish you a lovely day")
+    play_generated_audio("Thank you for talking with me. I wish you a lovely day")
 
 
 if __name__ == "__main__":

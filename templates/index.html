@@ -3,41 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Assistant Interaction</title>
+    <title>Lumi</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <h1>Voice Assistant Interaction</h1>
-        <form id="voice-form" action="/handle_request" method="post">
-        <label for="text">Enter text:</label><br>
-        <input type="text" id="text" name="text"><br>
-        <button type="submit" name="action" value="speak">Speak</button>
-        <button type="submit" name="action" value="listen">Listen</button>
-        <button type="submit" name="action" value="music_dialogue">Music Dialogue</button>
-    </form>
+    <h1>Lumi</h1>
+    <button id="startButton" onclick="startRecording()">Start talking with Lumi</button>
 
-    <div id="response"></div>
-
-    <script>
-        const form = document.getElementById('voice-form');
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(form);
-            try {
-                const response = await fetch('/handle_request', {
-                    method: 'POST',
-                    body: formData
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const text = await response.text();
-                document.getElementById('response').textContent = text;
-            } catch (error) {
-                console.error('Fetch error:', error);
-                document.getElementById('response').textContent = 'An error occurred while processing your request.';
-            }
-        });
-    </script>
+    <script src="/static/js/script.js"></script>
 </body>
 </html>
-
