@@ -1,23 +1,9 @@
 import os
 import pyaudio
 import wave
-import subprocess
+
 
 def record_audio(output_dir, duration=30, sample_rate=44100, channels=1, chunk=1024, format=pyaudio.paInt16):
-    """
-    Record audio from the microphone and save it to a WAV file.
-
-    Parameters:
-    - output_dir: The directory to save the recorded audio files to.
-    - duration: The duration of the recording in seconds (default is 5 seconds).
-    - sample_rate: The sample rate of the recording (default is 44100 Hz).
-    - channels: The number of audio channels (default is 2 for stereo).
-    - chunk: The number of frames per buffer (default is 1024).
-    - format: The audio data format (default is 16-bit PCM).
-
-    Returns:
-    - None
-    """
     audio = pyaudio.PyAudio()
 
     # Open a new stream to record audio
@@ -60,18 +46,6 @@ def record_audio(output_dir, duration=30, sample_rate=44100, channels=1, chunk=1
 
     return filename
 
-def convert_to_mp3(input_filename, output_filename):
-    """
-    Convert WAV audio file to MP3 format using FFmpeg.
-
-    Parameters:
-    - input_filename: The filename of the input WAV file.
-    - output_filename: The filename to save the converted MP3 file to.
-
-    Returns:
-    - None
-    """
-    subprocess.run(['ffmpeg', '-i', input_filename, '-codec:a', 'libmp3lame', output_filename])
 
 if __name__ == "__main__":
     # Define the output directory
@@ -81,12 +55,7 @@ if __name__ == "__main__":
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    # Record audio for 5 seconds (you can adjust the duration if needed)
+    # Record audio for 30 seconds (you can adjust the duration if needed)
     wav_filename = record_audio(output_dir, duration=30)
 
-    # Convert the WAV file to MP3 format
-    mp3_filename = os.path.splitext(wav_filename)[0] + ".mp3"
-    convert_to_mp3(wav_filename, mp3_filename)
-
-    print(f"Audio recorded and saved as {mp3_filename}")
-
+    print(f"Audio recorded and saved as {wav_filename}")

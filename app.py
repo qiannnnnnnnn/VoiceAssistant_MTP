@@ -1,25 +1,25 @@
 from flask import Flask, render_template, request
-from voiceassistant import main as voice_assistant_main
+from dialogue import speak, listen, music_dialogue
 
-# Initialize variables to store recognized text and assistant response
-recognized_text = ""
-assistant_response = ""
+app = Flask(__name__)
 
-app = Flask(__name__, template_folder='templates')
-
-@app.route("/", methods=["GET", "POST"])
+@app.route('/')
 def index():
-    global recognized_text, assistant_response
-    if request.method == "POST":
-        recognized_text = request.form["recognized_text"]
-        assistant_response = handle_user_request(recognized_text)  # Call your dialogue function
+    return render_template('index.html')
 
-    return render_template("index.html", recognized_text=recognized_text, assistant_response=assistant_response)
+@app.route('/handle_request', methods=['POST'])
+def handle_request():
+    if request.method == 'POST':
+        action = request.form['action']
+        if action == 'speak':
+            text = request.form['text']
+            speak(text)
+        elif action == 'listen':
+            text, _ = listen()
+            return text
+        elif action == 'music_dialogue':
+            music_dialogue()
+        return "Request completed successfully"
 
-# Replace this with your dialogue management functions
-def handle_user_request(text):
-    # Call the main function of voice assistant from Voiceassistant.py
-    return voice_assistant_main()
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

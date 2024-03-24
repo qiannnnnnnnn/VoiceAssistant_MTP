@@ -3,6 +3,7 @@ from gtts import gTTS
 import os
 from dialogue import alarm_dialogue, weather_dialogue, music_dialogue
 
+# 主要是这几个对话还可以保留
 
 # Initialize the speech recognition engine
 recognizer = sr.Recognizer()

@@ -1,34 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Document</title>
-  <link href="../static/style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Assistant Interaction</title>
 </head>
 <body>
-  <div class="container">
-   <img src="../image/logo.png" class="logo" alt="Logo">
-    <div class="content">
-      <div class="v3_14">
-        <div class="v3_20">
-          <div class="v3_15"></div>
-          <span class="v3_17">Lumi</span>
-        </div>
-        <span class="v3_18">Please read the following text aloud.</span>
-        <div class="v3_19"></div>
-        <span class="v3_21">
-          The experiment will last about 10 minutes. First, you need to read this text. Then, you will complete three tasks using voice control. At each stage, we will ask you to rate your feelings. Finally, you will record your experience.
-        </span>
-        <div class="v3_50">
-          <div class="name"></div>
-          <div class="v3_52">
-            <div class="v3_53"></div>
-            <div class="v3_54"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <h1>Voice Assistant Interaction</h1>
+        <form id="voice-form" action="/handle_request" method="post">
+        <label for="text">Enter text:</label><br>
+        <input type="text" id="text" name="text"><br>
+        <button type="submit" name="action" value="speak">Speak</button>
+        <button type="submit" name="action" value="listen">Listen</button>
+        <button type="submit" name="action" value="music_dialogue">Music Dialogue</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        const form = document.getElementById('voice-form');
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            try {
+                const response = await fetch('/handle_request', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const text = await response.text();
+                document.getElementById('response').textContent = text;
+            } catch (error) {
+                console.error('Fetch error:', error);
+                document.getElementById('response').textContent = 'An error occurred while processing your request.';
+            }
+        });
+    </script>
 </body>
 </html>
-
 

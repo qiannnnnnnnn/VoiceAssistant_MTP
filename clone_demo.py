@@ -3,14 +3,16 @@ from elevenlabs.client import ElevenLabs
 import os
 from elevenlabs import play
 
+# 要不要把这个和record结合在一起
+
 client = ElevenLabs(
     api_key="e0c5f7b856cf59ef10a4253335714486", # default ELEVEN_API_KEY
 )
 
 voice = client.clone(
     name="Qian",
-    description="An old American male voice with a slight hoarseness in his throat. Perfect for news",
-    files=["recordings/recorded_audio_2.mp3"],
+    description="testing,female voice",
+    files=["recordings/recorded_audio_2.wav"],
 )
 
 audio_generator = client.generate(text="Hi! I'm a cloned voice!", voice=voice)
@@ -24,16 +26,13 @@ with open(os.path.join("output", "output_audio.mp3"), "wb") as f:
     for chunk in audio_generator:
         f.write(chunk)
 
-# Modify pitch using ffmpeg (paths adjusted for output folder)
-subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=0.9", os.path.join("output", "output_pitch_changed_1.mp3")])
+# Modify pitch using ffmpeg
+subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=0.9", os.path.join("output", "output_pitch_changed_1.wav")])
+subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_1.wav")])
 
-# Play the generated audio (assuming ffplay is installed)
-subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_1.mp3")])
+subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=1.5", os.path.join("output", "output_pitch_changed_2.wav")])
+subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_2.wav")])
 
-# Modify pitch using ffmpeg (paths adjusted for output folder)
-subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=1.5", os.path.join("output", "output_pitch_changed_2.mp3")])
-subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_2.mp3")])
 
-# Modify pitch using ffmpeg (paths adjusted for output folder)
-subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=0.5", os.path.join("output", "output_pitch_changed_3.mp3")])
-subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_3.mp3")])
+subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=0.5", os.path.join("output", "output_pitch_changed_3.wav")])
+subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_3.wav")])
