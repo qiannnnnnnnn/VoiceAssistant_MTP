@@ -14,11 +14,7 @@ document.getElementById("startButton").addEventListener("click", function() {
     startRecording();
 });
 
-// script.js
-// script.js
-
-// script.js
-
+// Function to handle the start of recording
 function startRecording() {
     console.log("Recording started."); // 添加这行日志，用于检查函数是否被调用
 
@@ -28,14 +24,22 @@ function startRecording() {
     textElement.style.textAlign = "center"; // 居中文本
     document.body.appendChild(textElement);
 
+    // Show the recognizing button
+    document.getElementById("recognizingButton").style.display = "inline";
 
-    // 向服务器发送录音请求
+    // Perform AJAX request to start recording
     fetch('/record_voice', {
         method: 'POST'
     })
     .then(response => {
         if (response.ok) {
             console.log("Recording started.");
+            // Once recording is started, proceed with processing the voice
+            processVoice();
+            // 移除前面的文本元素
+            document.body.removeChild(textElement);
+            // 显示音乐指令文本
+            document.getElementById("musicInstructions").style.display = "block";
         } else {
             console.error("Failed to start recording.");
         }
@@ -43,4 +47,26 @@ function startRecording() {
     .catch(error => {
         console.error("Error starting recording:", error);
     });
+}
+
+
+// Function to process voice after recording
+function processVoice() {
+    // Perform AJAX request to process voice
+    fetch('/process_voice', {
+        method: 'POST'
+    })
+    .then(response => response.text())
+    .then(data => {
+        // Display response in the designated div
+        document.getElementById("responseText").innerText = data;
+
+        // Reset button text and hide recognizing button
+        document.getElementById("startButton").innerText = "Start talking with Lumi";
+        document.getElementById("recognizingButton").style.display = "none";
+
+        // 显示音乐指令文本
+        document.getElementById("musicInstructions").style.display = "block";
+    })
+    .catch(error => console.error('Error:', error));
 }

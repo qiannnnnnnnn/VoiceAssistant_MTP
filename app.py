@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from record import record_audio
+from dialogue_voice import main
 from elevenlabs.client import ElevenLabs
 import os
 import subprocess
@@ -56,6 +57,15 @@ def record_voice():
     except Exception as e:
         app.logger.error("Error recording audio: %s", str(e))
         return "Error recording audio.", 500
+
+@app.route('/process_voice', methods=['POST'])
+def process_voice():
+    app.logger.info("Received POST request to /process_voice")
+    # Assuming your function music_dialogue is defined elsewhere
+    main()
+    return "Voice processed."
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

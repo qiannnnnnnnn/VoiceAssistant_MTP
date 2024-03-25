@@ -7,8 +7,24 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <h1>Lumi</h1>
+    <!-- Logo -->
+    <img src="/static/image/logo.png" alt="Logo">
+    <!-- 标题 -->
+    <h1>Hello</h1>
+
+    <!-- 识别和音乐指令文本 -->
+    <div id="musicInstructions" style="display: none;">
+        <p>You need to play music, you can say:<br>
+        - Starts playing music.<br>
+        - Pauses the currently playing music.<br>
+        - Skips to the next song in the playlist or queue.</p>
+
+    </div>
+
+
     <button id="startButton" onclick="startRecording()">Start talking with Lumi</button>
+
+    <button id="recognizingButton" style="display: none;">Recognizing...</button>
 
     <script src="/static/js/script.js"></script>
 </body>
