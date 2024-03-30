@@ -2,11 +2,39 @@
 
 body {
     text-align: center;
+    color: #666;
 }
 
 button {
     margin-top: 20px;
 }
 
+h1 {
+    font-family: 'San Francisco', system-ui;
+    color: #666;
+}
+#musicInstructions {
+  font-family: 'San Francisco', system-ui;
+  font-size: 30px;  /* Adjust base font size as needed */
+  text-align: center;
+  list-style: none;
+  padding: 0;
+}
 
+#musicInstructions ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+#musicInstructions li {
+  margin-bottom: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+/* New style for important instructions */
+.important {
+  font-size: 40px;  /* Adjust font size for emphasis */
+  font-weight: bold;
+}

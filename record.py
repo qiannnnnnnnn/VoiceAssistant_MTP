@@ -3,7 +3,9 @@ import pyaudio
 import wave
 from flask import current_app as app
 
-def record_audio(output_dir, duration=30, sample_rate=44100, channels=1, chunk=1024, format=pyaudio.paInt16):
+
+# 先把时间改到3秒种，调试
+def record_audio(output_dir, duration=3, sample_rate=44100, channels=1, chunk=1024, format=pyaudio.paInt16):
     audio = pyaudio.PyAudio()
 
     # Open a new stream to record audio
