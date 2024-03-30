@@ -5,10 +5,10 @@ import subprocess
 from elevenlabs.client import ElevenLabs
 import uuid
 
-# Initialize the speech recognition engine
+# Initialize the speech recognition
 recognizer = sr.Recognizer()
 
-# Initialize the ElevenLabs client
+# call elevenlab Api
 client = ElevenLabs(
     api_key="e0c5f7b856cf59ef10a4253335714486",  # Replace with your API key
 )

@@ -61,7 +61,6 @@ def record_voice():
 @app.route('/process_voice', methods=['POST'])
 def process_voice():
     app.logger.info("Received POST request to /process_voice")
-    # Assuming your function music_dialogue is defined elsewhere
     main()
     return "Voice processed."
 
