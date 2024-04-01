@@ -3,6 +3,7 @@ from record import record_audio
 from music_task import music_task
 from alarm_task import alarm_task
 from weather_task import weather_task
+from feedback import record_feedback
 from flask_socketio import SocketIO
 
 from elevenlabs.client import ElevenLabs
@@ -10,7 +11,7 @@ import os
 import subprocess
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
-socketio = SocketIO(app)
+
 
 '''
 暂时用不到
@@ -47,24 +48,40 @@ def clone_voice(audio_file):
     subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_3.wav")])
 '''
 
-
 # Add questionnaire
 @app.route('/survey')
 def survey():
+    app.logger.info("Loading survey page")
     return render_template('survey.html')
 
-@app.route('/submit_survey', methods=['POST'])
-def submit_survey():
-    # 获取问卷数据
-    survey_data = request.form
-    # 在这里对问卷数据进行处理，例如保存到数据库中
+@app.route('/survey_alarm')
+def survey_alarm():
+    app.logger.info("Loading survey page")
+    return render_template('survey_alarm.html')
 
-    # 重定向到下一个对话
-    return redirect(url_for('next_dialogue'))
+
+@app.route('/survey_weather')
+def survey_weather():
+    app.logger.info("Loading survey page")
+    return render_template('survey_weather.html')
+
+@app.route('/alarm.html')
+def alarm_page():
+    return render_template('alarm.html')
+
+@app.route('/weather.html')
+def weather_page():
+    return render_template('weather.html')
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/feedback.html')
+def feedback_page():
+    return render_template('feedback.html')
+
 
 @app.route('/record_voice', methods=['POST'])
 def record_voice():
@@ -82,23 +99,33 @@ def record_voice():
 @app.route('/process_voice', methods=['POST'])
 def process_voice():
     app.logger.info("Received POST request to /process_voice")
-    # 发送音乐任务开始消息
-    socketio.emit('task_started', {'task': 'music'})
+
     music_task()
-    socketio.emit('task_completed', {'task': 'music'})
+    return "done"
 
-    # 发送闹钟任务开始消息
-    socketio.emit('task_started', {'task': 'alarm'})
+@app.route('/process_alarm_task',methods=['POST'])
+def process_alarm_task():
+
     alarm_task()
-    socketio.emit('task_completed', {'task': 'alarm'})
 
-    # 发送天气任务开始消息
-    socketio.emit('task_started', {'task': 'weather'})
+    return "done"
+
+@app.route('/process_weather_task',methods=['POST'])
+def process_weather_task():
+
     weather_task()
-    socketio.emit('task_completed', {'task': 'weather'})
+    return "done"
+
+@app.route('/feedback', methods=['POST'])
+def feedback_record():
+    feedback_dir = "feedback"
+    try:
+        audio_file = record_feedback(feedback_dir)
+        return "Recording completed."
+    except Exception as e:
+        return "Error recording feedback.", 500
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
-
+    app.run(debug=True)
 

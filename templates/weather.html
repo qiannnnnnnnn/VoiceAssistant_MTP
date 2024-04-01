@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumi</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+ <!-- Logo -->
+    <img src="/static/image/logo.png" alt="Logo">
+
+    <!-- 闹钟指令文本 -->
+    <div id="weatherInstructions">
+        <ul>
+            <li>You're required to check weather, you can say:</li>
+            <li class="important">"Check weather"</li>
+            <li class="important">"Temperature"</li>
+            <li class="important">"Wind speed"</li>
+            <li class="important">"Rain today"</li>
+            <li>......</li>
+        </ul>
+    </div>
+
+    <button id="surveyButton" onclick="goToSurveyPage_weather()">Take Survey</button>
+    <button onclick="processWeather()">Process Weather Task</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

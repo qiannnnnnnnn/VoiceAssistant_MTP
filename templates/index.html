@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumi</title>
     <link rel="stylesheet" href="/static/css/style.css">
+
 </head>
 <body>
     <!-- Logo -->
@@ -22,33 +23,15 @@
       </ul>
     </div>
 
-    <!-- 闹钟指令文本 -->
-    <div id="alarmInstructions" style="display: none;">
-        <ul>
-            <li>You're required to set an alarm, you can say:</li>
-            <li class="important">"Set alarm"</li>
-            <li class="important">"Stop alarm"</li>
-            <li class="important">"Snooze alarm"</li>
-            <li>......</li>
-        </ul>
-    </div>
 
-    <!-- 天气指令文本 -->
-    <div id="weatherInstructions" style="display: none;">
-        <ul>
-            <li>You're required to check weather, you can say:</li>
-            <li class="important">"Check weather"</li>
-            <li class="important">"Temperature"</li>
-            <li class="important">"Wind speed"</li>
-            <li class="important">"Rain today"</li>
-            <li>......</li>
-        </ul>
-    </div>
+
 
 
     <button id="startButton" onclick="startRecording()">Start talking with Lumi</button>
 
     <button id="recognizingButton" style="display: none;">Recognizing...</button>
+
+    <button id="surveyButton" onclick="goToSurveyPage()">Take Survey</button>
 
     <script src="/static/js/script.js"></script>
 </body>

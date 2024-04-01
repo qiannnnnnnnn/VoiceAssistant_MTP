@@ -1,3 +1,4 @@
+
 const listenButton = document.getElementById('listenButton');
 const responseDiv = document.getElementById('response');
 
@@ -57,42 +58,6 @@ function startRecording() {
 
 
 
-// websocket.js
-
-const socket = io();
-socket.on('task_started', function(data) {
-    if (data.task === 'music') {
-        document.getElementById('musicInstructions').style.display = 'block';
-        document.getElementById('alarmInstructions').style.display = 'none';
-        document.getElementById('weatherInstructions').style.display = 'none';
-    } else if (data.task === 'alarm') {
-        document.getElementById('musicInstructions').style.display = 'none';
-        document.getElementById('alarmInstructions').style.display = 'block';
-        document.getElementById('weatherInstructions').style.display = 'none';
-    } else if (data.task === 'weather') {
-        document.getElementById('musicInstructions').style.display = 'none';
-        document.getElementById('alarmInstructions').style.display = 'none';
-        document.getElementById('weatherInstructions').style.display = 'block';
-    }
-});
-
-socket.on('task_completed', function(data) {
-     console.log('WebSocketconnented');
-    const task = data.task;
-    if (task === 'music' || task === 'alarm' || task === 'weather') {
-        hideInstructions();
-    }
-});
-
-function hideInstructions() {
-    document.getElementById('musicInstructions').style.display = 'none';
-    document.getElementById('alarmInstructions').style.display = 'none';
-    document.getElementById('weatherInstructions').style.display = 'none';
-}
-
-
-
-
 // Function to process voice after recording
 function processVoice() {
     // Perform AJAX request to process voice
@@ -113,3 +78,80 @@ function processVoice() {
     .catch(error => console.error('Error:', error));
 }
 
+
+ // 添加跳转到调查页面的点击事件处理程序
+function goToSurveyPage() {
+    window.location.href = "/survey";
+}
+
+function goToSurveyPage_alarm() {
+    window.location.href = "/survey_alarm";
+}
+function goToSurveyPage_weather() {
+    window.location.href = "/survey_weather";
+}
+
+function processAlarm() {
+    // 执行 AJAX 请求来处理闹钟任务
+    fetch('/process_alarm_task', {
+        method: 'POST'
+    })
+    .then(response => response.text())
+    .then(data => {
+        // 在指定的 div 中显示响应
+        document.getElementById("responseText").innerText = data;
+        // 显示音乐指令文本
+        document.getElementById("musicInstructions").style.display = "block";
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+function processWeather() {
+    // 执行 AJAX 请求来处理闹钟任务
+    fetch('/process_weather_task', {
+        method: 'POST'
+    })
+    .then(response => response.text())
+    .then(data => {
+
+        document.getElementById("responseText").innerText = data;
+        document.getElementById("musicInstructions").style.display = "block";
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    // 在文档加载完成后执行以下代码
+
+    // 获取按钮和提示文字的引用
+    var startFeedbackButton = document.getElementById("startFeedbackButton");
+    var feedbackMessage = document.getElementById("feedbackMessage");
+
+    // 为按钮添加点击事件监听器
+    startFeedbackButton.addEventListener("click", function() {
+        // 显示提示文字
+        feedbackMessage.style.display = "block";
+
+        // 创建一个 FormData 对象，用于发送表单数据
+        var formData = new FormData();
+        formData.append('duration', "5"); // 默认录音时长为 5 秒
+
+        // 发送 POST 请求到 Flask 服务器开始录音
+        fetch('/feedback', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log("Feedback recording started.");
+                // 在这里可以添加一些界面交互，例如显示录音已开始的消息等
+            } else {
+                console.error("Failed to start feedback recording.");
+            }
+        })
+        .catch(error => {
+            console.error("Error starting feedback recording:", error);
+        });
+    });
+});

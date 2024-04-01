@@ -144,6 +144,7 @@ def music_dialogue():
 
 
 def music_task():
+
     # Welcome message
     play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?")
 
