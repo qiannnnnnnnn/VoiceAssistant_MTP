@@ -51,5 +51,3 @@ def record_feedback(output_dir="feedback", duration=3, sample_rate=44100, channe
 
         print(f"Feedback saved as: {filename}")
 
-if __name__ == "__main__":
-    record_feedback()

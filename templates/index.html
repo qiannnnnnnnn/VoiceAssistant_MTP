@@ -14,25 +14,25 @@
     <!-- 识别和音乐指令文本 -->
     <div id="musicInstructions" style="display: none;">
       <ul>
-        <li>You're required to play music, you can say:</li>
-        <li class = important>"Play music" </li>
-        <li class = important>"Pause music" </li>
-        <li class = important>"Next song"</li>
-        <li class = important>"Stop playing"</li>
+        <li>You're required to check the news, you can say:</li>
+        <li class = important>"News today" </li>
+        <li class = important>"Pause the news" </li>
+        <li class = important>"Next news"</li>
         <li>......</Li>
       </ul>
     </div>
 
+    <!-- face detection
+    <video id="video" width="640" height="480" autoplay muted></video>
+    <canvas id="faceDetectionCanvas"></canvas>-->
 
+    <button id="startButton" class="startButton" onclick="startRecording()">Click this button and reading the text below</button>
 
+    <button id="recognizingButton"  class="startButton"  style="display: none;">Recognizing...</button>
 
-
-    <button id="startButton" onclick="startRecording()">Start talking with Lumi</button>
-
-    <button id="recognizingButton" style="display: none;">Recognizing...</button>
-
-    <button id="surveyButton" onclick="goToSurveyPage()">Take Survey</button>
+    <button id="surveyButton" class="surveyButton" onclick="goToSurveyPage()">Take Survey</button>
 
     <script src="/static/js/script.js"></script>
+    <script src="/static/js/face-api.js"></script>
 </body>
 </html>

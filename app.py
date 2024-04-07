@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from record import record_audio
-from music_task import music_task
+from news_task import news_task
 from alarm_task import alarm_task
 from weather_task import weather_task
 from feedback import record_feedback
@@ -37,15 +37,14 @@ def clone_voice(audio_file):
         for chunk in audio_generator:
             f.write(chunk)
 
-    # Modify pitch using ffmpeg
-    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=0.9", os.path.join("output", "output_pitch_changed_1.wav")])
-    subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_1.wav")])
-
-    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=1.5", os.path.join("output", "output_pitch_changed_2.wav")])
-    subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_2.wav")])
-
-    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=0.5", os.path.join("output", "output_pitch_changed_3.wav")])
-    subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_3.wav")])
+    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "rubberband=pitch=2.0", os.path.join("output", "output_pitch_changed_1.wav")])
+    #subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_1.wav")])
+    
+    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "rubberband=pitch=1.5", os.path.join("output", "output_pitch_changed_2.wav")])
+    #subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_2.wav")])
+    # 
+    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "rubberband=pitch=0.5", os.path.join("output", "output_pitch_changed_3.wav")])
+    #subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_3.wav")])
 '''
 
 # Add questionnaire
@@ -100,7 +99,7 @@ def record_voice():
 def process_voice():
     app.logger.info("Received POST request to /process_voice")
 
-    music_task()
+    news_task()
     return "done"
 
 @app.route('/process_alarm_task',methods=['POST'])

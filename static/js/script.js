@@ -17,7 +17,7 @@ document.getElementById("startButton").addEventListener("click", function() {
 
 // Function to handle the start of recording
 function startRecording() {
-    console.log("Recording started."); // 添加这行日志，用于检查函数是否被调用
+    console.log("Recording started.");
 
     // 创建文本元素
     var textElement = document.createElement('p');
@@ -54,6 +54,7 @@ function startRecording() {
     .catch(error => {
         console.error("Error starting recording:", error);
     });
+    document.getElementById("startButton").style.display = "none";
 }
 
 
@@ -78,17 +79,23 @@ function processVoice() {
     .catch(error => console.error('Error:', error));
 }
 
+const surveyButton = document.getElementById('surveyButton');
+const nextButton_alarm = document.getElementById('nextButton_alarm');
 
  // 添加跳转到调查页面的点击事件处理程序
 function goToSurveyPage() {
     window.location.href = "/survey";
+    surveyButton.style.display = "none";
 }
 
 function goToSurveyPage_alarm() {
     window.location.href = "/survey_alarm";
+
 }
+
 function goToSurveyPage_weather() {
     window.location.href = "/survey_weather";
+
 }
 
 function processAlarm() {
@@ -155,3 +162,97 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+
+
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+
+Promise.all([
+    faceapi.nets.ssdMobilenetv1.loadFromUri('/models'),
+    faceapi.nets.faceExpressionNet.loadFromUri('/models')
+])
+    .then(startVideo)
+    .catch(err => console.error(err));
+
+async function startVideo() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+            video.play();
+            processVideo();
+        })
+        .catch(err => console.error(err));
+}
+
+function processVideo() {
+  const displaySize = { width: video.width, height: video.height };
+  faceapi.matchDimensions(canvas, displaySize);
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      const context = canvas.getContext('2d');
+
+      const drawBox = (detection, expressions, context) => {
+        const box = detection.detection.box;
+        const drawSize = new faceapi.Size(video.width, video.height);
+        const resizedBox = faceapi.resizeResults(box, drawSize);
+
+        context.strokeStyle = 'blue';
+        context.lineWidth = 2;
+        context.rect(resizedBox.x, resizedBox.y, resizedBox.width, resizedBox.height);
+        context.stroke();
+
+        // Display expression labels
+        const expressionsArray = Object.entries(expressions);
+        const topExpression = expressionsArray.reduce((prev, curr) => curr[1] > prev[1] ? curr : prev);
+        context.font = "24px Arial";
+        context.fillStyle = "white";
+        context.fillText(topExpression[0], resizedBox.x + 5, resizedBox.y + resizedBox.height + 15);
+
+        // Perform actions based on expression (replace with your logic)
+        const audioElement = document.getElementById(topExpression[0]);
+        if (audioElement) {
+          audioElement.play();
+        } else {
+          console.log(`No audio for expression: ${topExpression[0]}`);
+        }
+      };
+
+      video.onplay = () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        setInterval(async () => {
+          try {
+            const detections = await faceapi.detectAllFaces(video, new faceapi.SsdMobilenetv1Options())
+              .withFaceExpressions();
+            const resizedDetections = faceapi.resizeResults(detections, displaySize);
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+
+            resizedDetections.forEach(detection => drawBox(detection, detection.expressions, context));
+          } catch (err) {
+            console.error('Error processing video:', err);
+          }
+        }, 100); // Process video every 100 milliseconds
+      };
+    })
+    .catch(err => console.error('Error accessing video stream:', err));
+}
+
+function countdown() {
+            // 启动倒计时
+            var seconds = 30;
+            var countdownDisplay = document.getElementById('countdown');
+
+            var countdownInterval = setInterval(function() {
+                seconds--;
+                countdownDisplay.textContent = seconds;
+
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownDisplay.textContent = 'Time up!';
+                    // 在这里可以调用发送录音请求的函数
+                    // sendRecordingRequest();
+                }
+            }, 1000);
+        }

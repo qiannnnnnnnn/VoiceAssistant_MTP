@@ -9,41 +9,21 @@ import uuid
 # Initialize the speech recognition
 recognizer = sr.Recognizer()
 
-# call elevenlab Api
-client = ElevenLabs(
-    api_key="e0c5f7b856cf59ef10a4253335714486",  # Replace with your API key
-)
+from gtts import gTTS
+from pydub import AudioSegment
+from pydub.playback import play
 
-'''
-生成次数用完了暂时先这样，不克隆新的
-# Clone the voice once
-voice = client.clone(
-    name="Qian",
-    description="dialogue_voice test",
-    files=["output/output_pitch_changed_1.mp3"],  # Use the provided audio file path
-)
-'''
-
-voice_name = "Qian_pitch1"
-
-
-def play_generated_audio(text, voice_name="Qian"):
+def play_generated_audio(text, voice_name="en-US"):
     try:
-        audio_generator = client.generate(text=text, voice=voice_name)
+        tts = gTTS(text=text, lang=voice_name)
+        tts.save("generated_audio.mp3")  # 保存生成的音频文件
 
-        # Use subprocess.Popen() to play the generated audio
-        ffplay_process = subprocess.Popen(["ffplay", "-autoexit", "-nodisp", "-"], stdin=subprocess.PIPE,
-                                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-        # Write audio stream to ffplay process's standard input
-        for chunk in audio_generator:
-            ffplay_process.stdin.write(chunk)
-
-        # Close standard input, wait for audio playback to finish
-        ffplay_process.stdin.close()
-        ffplay_process.wait()
+        # 使用pydub加载并播放音频文件
+        audio = AudioSegment.from_mp3("generated_audio.mp3")
+        play(audio)
     except Exception as e:
         print("Error while playing audio:", e)
+
 
 
 def tts_init(text, lang="en"):
@@ -89,15 +69,15 @@ import os
 import uuid
 import time
 
-def music_dialogue():
+def devices_dialogue():
     # save all user's voice
-    os.makedirs("dialogues", exist_ok=True)
+    os.makedirs("dialogues_task3", exist_ok=True)
 
     # Generate a unique conversation ID
     dialog_id = str(uuid.uuid4())
 
     # Create a new folder with the conversation ID
-    os.makedirs(os.path.join("dialogues", dialog_id), exist_ok=True)
+    os.makedirs(os.path.join("dialogues_task3", dialog_id), exist_ok=True)
 
     start_time = time.time()
     while time.time() - start_time < 3:  # Interact for one minute
@@ -106,50 +86,43 @@ def music_dialogue():
 
         # Save the user's input audio
         if input_audio_file:
-            os.rename(input_audio_file, os.path.join("dialogues", dialog_id, "input.wav"))
+            os.rename(input_audio_file, os.path.join("dialogues_task3", dialog_id, "input.wav"))
 
         # Check if user requests music
-        if "play" in input_text:
-            play_generated_audio("Playing some pop music.")
-        elif "pause" in input_text:
-            play_generated_audio("Pausing the music.")
-        elif "next" in input_text:
-            play_generated_audio("Playing the next song.")
-        elif "stop" in input_text:
-            play_generated_audio("Stopping the music.")
-        elif "increase" in input_text:
-            play_generated_audio("Increasing the volume.")
-        elif "decrease" in input_text:
-            play_generated_audio("Decreasing the volume.")
-        elif "shuffle" in input_text:
-            play_generated_audio("Shuffling the playlist.")
-        elif "repeat" in input_text:
-            play_generated_audio("Repeating the current song.")
+        if "turn" in input_text:
+            play_generated_audio("Alright, I've turned off the lights in the bedroom. "
+                                 "Would you like me to control other devices")
+        elif "set" in input_text:
+            play_generated_audio("Got it. The living room temperature has been set to 21 degrees. "
+                                 "Let me know if you need any further adjustments or if there's anything else I can assist you with.")
+        elif "lock" in input_text:
+            play_generated_audio("Front door successfully locked. Your home is now secure. "
+                                 "If you need to grant access to someone or perform any other tasks, feel free to let me know.")
+
         elif "thank" in input_text:
             play_generated_audio("You're welcome. What else can I do for you?")
         else:
             play_generated_audio("Sorry, I didn't understand your request.")
 
     # Prompt the user for continuation
-    play_generated_audio("Do you want to continue with another music action?")
+    play_generated_audio("Do you want to continue with controlling other devices")
 
     # Listen for user response
     text, audio_file = listen()
 
     # Check if the user wants to continue
     if "yes" in text or "continue" in text:
-        music_dialogue()
+        devices_dialogue()
     else:
-        play_generated_audio("Okay, enjoy your music")
+        play_generated_audio("Okay")
 
 
-def music_task():
-
+def devices_task():
     # Welcome message
     play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?")
 
     # Proceed with music-related dialogue
-    music_dialogue()
+    devices_dialogue()
 
     # Goodbye message
     play_generated_audio("This round is done, please fill in the survey")
@@ -157,4 +130,4 @@ def music_task():
 
 
 if __name__ == "__main__":
-    music_task()
+    devices_task()

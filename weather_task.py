@@ -110,17 +110,17 @@ def weather_dialogue():
 
         # Check if user requests music
         if "check" in input_text and "weather" in input_text:
-            play_generated_audio("Checking the weather.")
-        elif "forecast" in input_text:
-            play_generated_audio("Retrieving weather forecast.")
+            play_generated_audio("Currently checking the weather for Eindhoven. "
+                                 "It seems to be a beautiful day with plenty of sunshine. "                               
+                                 "It's perfect weather for wearing light and comfortable clothing. "
+                                 "You might want to consider outdoor activities such as picnics, walks in the park, or cycling. "
+                                 "Enjoy the lovely weather!")
         elif "temperature" in input_text:
-            play_generated_audio("Checking the temperature.")
-        elif "humidity" in input_text:
-            play_generated_audio("Checking the humidity.")
+            play_generated_audio("The temperature is around 20 degrees Celsius, and there's hardly any wind. ")
         elif "wind speed" in input_text:
-            play_generated_audio("Checking the wind speed.")
+            play_generated_audio("Checking the wind speed.There's hardly any wind.")
         elif "rain" in input_text or "rainfall" in input_text:
-            play_generated_audio("Checking rainfall.")
+            play_generated_audio("Checking rainfall.There is no rainfall today.")
         elif "thank" in input_text:
             play_generated_audio("You're welcome. What else can I do for you?")
         else:

@@ -7,8 +7,9 @@
 </head>
 <body>
     <h1>Record Feedback</h1>
-    <p id="feedbackMessage" style="display: none;">How do you like Lumi?</p>
-    <button id="startFeedbackButton">Start Feedback</button>
+    <p id="feedbackMessage" >How do you like Lumi?</p>
+    <button id="startFeedbackButton" class="startFeedbackButton" onclick="countdown()">Start Feedback</button>
+    <p id="countdown">You can record your feedback in <span id="countdownValue">30</span> seconds</p> <!-- 倒计时显示器 -->
 
     <script src="/static/js/script.js"></script>
 </body>

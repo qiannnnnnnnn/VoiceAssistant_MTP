@@ -10,6 +10,74 @@ button {
     background-color:#f8df3aff ;
 }
 
+
+.startButton {
+    background-color: #2f2f2f; /* 设置按钮的背景颜色为深灰色 */
+    color: white; /* 设置按钮的文字颜色为白色 */
+    padding: 20px 40px; /* 设置按钮的内边距稍大一些 */
+    font-size: 18px; /* 设置按钮文字大小 */
+    border-radius: 12px; /* 设置按钮的边框圆角 */
+    border: none; /* 移除按钮的边框 */
+}
+
+/* 调查按钮样式 */
+.surveyButton {
+    background-color: #f8df3aff;
+    color: white; /* 设置按钮的文字颜色为白色 */
+    padding: 15px 30px; /* 设置按钮的内边距稍大一些 */
+    font-size: 18px; /* 设置按钮文字大小 */
+    border-radius: 12px; /* 设置按钮的边框圆角 */
+    border: none; /* 移除按钮的边框 */
+}
+
+.nextTaskButton {
+    background-color: #007bff; /* 设置按钮的背景颜色为蓝色 */
+    color: white; /* 设置按钮的文字颜色为白色 */
+    padding: 20px 40px; /* 设置按钮的内边距 */
+    font-size: 16px; /* 设置按钮文字大小 */
+    border-radius: 8px; /* 设置按钮的边框圆角 */
+    border: none; /* 移除按钮的边框 */
+    cursor: pointer; /* 设置按钮的鼠标指针样式 */
+    transition: background-color 0.3s; /* 设置按钮背景颜色变化的过渡效果 */
+}
+
+.nextTaskButton:hover {
+    background-color: #0056b3; /* 设置按钮悬停时的背景颜色 */
+}
+
+.processButton {
+    background-color: #ffc107; /* 设置按钮的背景颜色为黄色 */
+    color: white; /* 设置按钮的文字颜色为白色 */
+    padding: 20px 40px; /* 设置按钮的内边距 */
+    font-size: 16px; /* 设置按钮文字大小 */
+    border-radius: 8px; /* 设置按钮的边框圆角 */
+    border: none; /* 移除按钮的边框 */
+    cursor: pointer; /* 设置按钮的鼠标指针样式 */
+    transition: background-color 0.3s; /* 设置按钮背景颜色变化的过渡效果 */
+}
+
+.processButton:hover {
+    background-color: #ffca28; /* 设置按钮悬停时的背景颜色 */
+}
+
+
+.startFeedbackButton {
+    background-color: #ffc107; /* 设置按钮的背景颜色为黄色 */
+    color: white; /* 设置按钮的文字颜色为白色 */
+    padding: 15px 30px; /* 设置按钮的内边距 */
+    font-size: 16px; /* 设置按钮文字大小 */
+    border-radius: 8px; /* 设置按钮的边框圆角 */
+    border: none; /* 移除按钮的边框 */
+    cursor: pointer; /* 设置按钮的鼠标指针样式 */
+    transition: background-color 0.3s; /* 设置按钮背景颜色变化的过渡效果 */
+}
+
+.startFeedbackButton:hover {
+    background-color: #ffca28; /* 设置按钮悬停时的背景颜色 */
+}
+
+
+
 h1 {
     font-family: 'San Francisco', system-ui;
     color: #423e3eff;
@@ -56,6 +124,35 @@ h1 {
 }
 
 #alarmInstructions li {
+  margin-bottom: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+/* New style for important instructions */
+.important {
+  font-size: 40px;  /* Adjust font size for emphasis */
+  font-weight: bold;
+}
+
+
+
+
+#weatherInstructions {
+  font-family: 'San Francisco', system-ui;
+  font-size: 30px;  /* Adjust base font size as needed */
+  text-align: center;
+  list-style: none;
+  padding: 0;
+}
+
+#weatherInstructions ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#weatherInstructions li {
   margin-bottom: 10px;
   padding: 0;
   list-style: none;

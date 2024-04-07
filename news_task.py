@@ -24,7 +24,7 @@ voice = client.clone(
 )
 '''
 
-voice_name = "Qian_pitch2"
+voice_name = "Qian_pitch1"
 
 
 def play_generated_audio(text, voice_name="Qian"):
@@ -89,58 +89,63 @@ import os
 import uuid
 import time
 
-def alarm_dialogue():
+def news_dialogue():
     # save all user's voice
-    os.makedirs("dialogues_task2", exist_ok=True)
+    os.makedirs("dialogues", exist_ok=True)
 
     # Generate a unique conversation ID
     dialog_id = str(uuid.uuid4())
 
     # Create a new folder with the conversation ID
-    os.makedirs(os.path.join("dialogues_task2", dialog_id), exist_ok=True)
+    os.makedirs(os.path.join("dialogues", dialog_id), exist_ok=True)
 
     start_time = time.time()
-    while time.time() - start_time < 3:  # Interact for one minute
+    while time.time() - start_time < 1:  # Interact for one minute
         # Listen for user input
         input_text, input_audio_file = listen()
 
         # Save the user's input audio
         if input_audio_file:
-            os.rename(input_audio_file, os.path.join("dialogues_task2", dialog_id, "input.wav"))
+            os.rename(input_audio_file, os.path.join("dialogues", dialog_id, "input.wav"))
 
-        # Check if user requests alarm
-        if "set" in input_text and "alarm" in input_text:
-            play_generated_audio("Alarm successfully set. Get ready for a productive day ahead!")
-        elif "snooze" in input_text:
-            play_generated_audio("Snoozing the alarm. Enjoy a few more moments of rest.")
-        elif "stop" in input_text or "cancel" in input_text:
-            play_generated_audio("Alarm stopped. Have a wonderful day!")
-        elif "repeat" in input_text:
-            play_generated_audio("Repeating the alarm. Time to wake up and seize the day!")
+        # Check if user says news/podcast
+        if "news" in input_text:
+            play_generated_audio("In today's headlines, tensions escalated in the Middle East "
+                                 "as diplomatic talks broke down between neighboring nations. "
+                                 "Meanwhile, scientists announced a groundbreaking discovery in renewable energy technology,"
+                                 " offering hope for a greener future. In other news, "
+                                 "the stock market saw significant fluctuations, prompting investors to reassess their portfolios. "
+                                 "Stay tuned for further updates on these developing stories and more.")
+        elif "pause" in input_text:
+            play_generated_audio(
+                "Pausing the current news update. Stay tuned as we'll resume shortly after this brief pause.")
+        elif "next" in input_text:
+            play_generated_audio("Moving on to the next news segment. Stay informed with our continuous coverage.")
         elif "thank" in input_text:
-            play_generated_audio("You're welcome. Is there anything else I can assist you with?")
+            play_generated_audio("You're welcome. What else can I do for you?")
         else:
-            play_generated_audio("Apologies, I didn't quite catch that. Could you please repeat or ask something else?")
+            play_generated_audio("Sorry,I didn't catch that. Could you please ask a question about the news?")
 
     # Prompt the user for continuation
-    play_generated_audio("Do you want to continue with another alarm action?")
+    play_generated_audio("Do you want to continue with another news action?")
 
     # Listen for user response
     text, audio_file = listen()
 
     # Check if the user wants to continue
     if "yes" in text or "continue" in text:
-        alarm_dialogue()
+        news_dialogue()
     else:
-        play_generated_audio("Okay")
+        play_generated_audio("Okay,have a nice day")
 
 
-def alarm_task():
+def news_task():
+
     # Welcome message
     play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?")
 
     # Proceed with music-related dialogue
-    alarm_dialogue()
+    news_dialogue()
 
     # Goodbye message
     play_generated_audio("This round is done, please fill in the survey")
@@ -148,4 +153,4 @@ def alarm_task():
 
 
 if __name__ == "__main__":
-    alarm_task()
+    news_task()
