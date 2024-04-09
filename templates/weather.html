@@ -22,10 +22,13 @@
         </ul>
     </div>
 
-    <button id="surveyButton" class="surveyButton"  onclick="goToSurveyPage_weather()">Take Survey</button>
-    <button class="processButton" onclick="processWeather()">Process Weather Task</button>
+   <!-- face detection    style="display:none;" -->
+    <video id="video" width="120" height="90" autoplay muted ></video>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <button id="surveyButton_weather" class="surveyButton"  onclick="goToSurveyPage_weather()">Go To Survey</button>
+    <button id="processWeatherButton" class="processButton" onclick="processWeather()">Process Weather Task</button>
+
+    <script src="/static/js/face-api.min.js"></script>
     <script src="/static/js/script.js"></script>
 </body>
 </html>

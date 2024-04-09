@@ -22,17 +22,17 @@
       </ul>
     </div>
 
-    <!-- face detection
-    <video id="video" width="640" height="480" autoplay muted></video>
-    <canvas id="faceDetectionCanvas"></canvas>-->
+    <!-- face detection    style="display:none;" -->
+    <video id="video" width="120" height="90" autoplay muted ></video>
 
+    <!-- buttons-->
     <button id="startButton" class="startButton" onclick="startRecording()">Click this button and reading the text below</button>
 
     <button id="recognizingButton"  class="startButton"  style="display: none;">Recognizing...</button>
 
-    <button id="surveyButton" class="surveyButton" onclick="goToSurveyPage()">Take Survey</button>
+    <button id="surveyButton" class="surveyButton" onclick="goToSurveyPage()">Go To Survey</button>
 
     <script src="/static/js/script.js"></script>
-    <script src="/static/js/face-api.js"></script>
+    <script src="/static/js/face-api.min.js"></script>
 </body>
 </html>

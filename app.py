@@ -4,6 +4,7 @@ from news_task import news_task
 from alarm_task import alarm_task
 from weather_task import weather_task
 from feedback import record_feedback
+from devices_task import devices_task
 from flask_socketio import SocketIO
 
 from elevenlabs.client import ElevenLabs
@@ -58,11 +59,15 @@ def survey_alarm():
     app.logger.info("Loading survey page")
     return render_template('survey_alarm.html')
 
-
 @app.route('/survey_weather')
 def survey_weather():
     app.logger.info("Loading survey page")
     return render_template('survey_weather.html')
+@app.route('/survey_devices')
+def survey_devices():
+    app.logger.info("Loading survey page")
+    return render_template('survey_devices.html')
+
 
 @app.route('/alarm.html')
 def alarm_page():
@@ -72,6 +77,9 @@ def alarm_page():
 def weather_page():
     return render_template('weather.html')
 
+@app.route('/devices.html')
+def devices_page():
+    return render_template('devices.html')
 
 @app.route('/')
 def index():
@@ -114,6 +122,14 @@ def process_weather_task():
 
     weather_task()
     return "done"
+
+@app.route('/process_devices_task',methods=['POST'])
+def process_devices_task():
+
+    devices_task()
+    return "done"
+
+
 
 @app.route('/feedback', methods=['POST'])
 def feedback_record():

@@ -5,6 +5,19 @@ body {
     color: #666;
 }
 
+
+h1 {
+    color: #333;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+p {
+    color: #666;
+    font-size: 24px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
 button {
     margin-top: 20px;
     background-color:#f8df3aff ;
@@ -162,4 +175,13 @@ h1 {
 .important {
   font-size: 40px;  /* Adjust font size for emphasis */
   font-weight: bold;
+}
+
+
+#video {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 640px;
+  height: 480px;
 }
