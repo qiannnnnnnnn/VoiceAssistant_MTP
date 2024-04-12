@@ -27,7 +27,7 @@ with open(os.path.join("output", "output_audio.mp3"), "wb") as f:
         f.write(chunk)
 
 # Modify pitch using ffmpeg
-subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=0.9", os.path.join("output", "output_pitch_changed_1.wav")])
+subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "atempo=1.1892071150027210667977499790004,asetrate=44100*1.1892071150027210667977499790004", os.path.join("output", "output_pitch_changed_1.wav")])
 subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_1.wav")])
 
 subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "asetrate=44100*1.1,atempo=1.5", os.path.join("output", "output_pitch_changed_2.wav")])

@@ -1,20 +1,39 @@
 import subprocess
 import os
+import math
 
-# Function to change audio pitch without changing speed using FFmpeg
-def change_pitch(input_data, output_file, pitch_factor):
-    ffmpeg_command = ["ffmpeg", "-i", "-", "-af", f"rubberband=pitch={pitch_factor}", "-f", "wav", "-"]
-    with subprocess.Popen(ffmpeg_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as process:
-        output_data, _ = process.communicate(input=input_data)
-        with open(output_file, 'wb') as f:
-            f.write(output_data)
+# Define a function to calculate the tempo factor based on semitones
+def get_tempo_factor(semitones):
+  """
+  This function calculates the tempo factor for a given number of semitones.
+  """
+  return math.pow(2, semitones / 12)
 
 # Load audio data
 with open(os.path.join("output", "output_audio.mp3"), "rb") as f:
     audio_data = f.read()
 
-# Change pitch without changing speed
-change_pitch(audio_data, os.path.join("output", "output_pitch_changed_1.wav"), 2.0)
-change_pitch(audio_data, os.path.join("output", "output_pitch_changed_2.wav"), 1.5)
-change_pitch(audio_data, os.path.join("output", "output_pitch_changed_3.wav"), 0.5)
-change_pitch(audio_data, os.path.join("output", "output_pitch_changed_5.wav"), 1)
+# Define semitone values
+semitones_list = [2.5, 3, 4]  # You can adjust this list for different semitones
+
+for semitones in semitones_list:
+  # Calculate tempo factor
+  tempo_factor = get_tempo_factor(semitones)
+
+  # Construct the ffmpeg command with calculated tempo factor
+  ffmpeg_command = [
+      "ffmpeg",
+      "-i", "-",
+      "-af", f"atempo={tempo_factor},asetrate=44100*{tempo_factor}",
+      "-f", "wav", "-"]
+
+  # Define output filename based on semitones
+  output_file = os.path.join("output", f"output_pitch_changed_{semitones}.wav")
+
+  # Execute ffmpeg command with subprocess
+  with subprocess.Popen(ffmpeg_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as process:
+      output_data, _ = process.communicate(input=audio_data)
+      with open(output_file, 'wb') as f:
+          f.write(output_data)
+
+  print(f"Finished processing audio with {semitones} semitones")

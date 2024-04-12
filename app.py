@@ -22,8 +22,8 @@ def clone_voice(audio_file):
     )
 
     voice = client.clone(
-        name="Qian",
-        description="testing,female voice",
+        name="Participant",
+        description="participant's original voice",
         files=[audio_file],
     )
 
@@ -38,13 +38,20 @@ def clone_voice(audio_file):
         for chunk in audio_generator:
             f.write(chunk)
 
-    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "rubberband=pitch=2.0", os.path.join("output", "output_pitch_changed_1.wav")])
+
+   # Two semitones
+    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), atempo=1.1892071150027210667977499790004,asetrate=44100*1.1892071150027210667977499790004", 
+    os.path.join("output", "output_pitch_changed_1.wav")])
     #subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_1.wav")])
     
-    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "rubberband=pitch=1.5", os.path.join("output", "output_pitch_changed_2.wav")])
+    # Three semitones
+    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), atempo=1.4142135623730950488016887242097,asetrate=44100*1.4142135623730950488016887242097,
+    os.path.join("output", "output_pitch_changed_2.wav")])
     #subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_2.wav")])
-    # 
-    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), "-af", "rubberband=pitch=0.5", os.path.join("output", "output_pitch_changed_3.wav")])
+    
+    # Four semitones
+    subprocess.call(["ffmpeg", "-i", os.path.join("output", "output_audio.mp3"), atempo=1.6588743236448599122977960769231,asetrate=44100*1.6588743236448599122977960769231",
+    os.path.join("output", "output_pitch_changed_3.wav")])
     #subprocess.call(["ffplay", os.path.join("output", "output_pitch_changed_3.wav")])
 '''
 
