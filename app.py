@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
-from record import record_audio
+from record import record_audio,change_pitch
 from news_task import news_task
 from alarm_task import alarm_task
 from weather_task import weather_task
 from feedback import record_feedback
 from devices_task import devices_task
 from flask_socketio import SocketIO
+from flask import Flask, request, send_file
+import record
+
 
 from elevenlabs.client import ElevenLabs
 import os
@@ -99,17 +102,25 @@ def feedback_page():
 
 @app.route('/record_voice', methods=['POST'])
 def record_voice():
-    app.logger.info("Received POST request to /record_voice")
     output_dir = "recordings"
     try:
-        audio_file = record_audio(output_dir)
-        app.logger.info("Recording completed. Audio file saved at: %s", audio_file)
-        return "Recording completed."
+        filename = request.form.get('filename', 'recorded_audio.wav')
+        audio_file = record_audio(output_dir, filename)
+        pitch_changed_file = change_pitch(audio_file, os.path.join(output_dir, "pitch_changed.wav"), 1.1892)
+
+        if pitch_changed_file:
+            print("Modified audio saved at:", pitch_changed_file)
+            return send_file(pitch_changed_file, as_attachment=True)
+        else:
+            return "Error changing pitch.", 500
     except Exception as e:
-        app.logger.error("Error recording audio: %s", str(e))
+        print("Error recording audio:", e)
         return "Error recording audio.", 500
 
 
+
+if __name__ == "__main__":
+    app.run(debug=True)
 @app.route('/process_voice', methods=['POST'])
 def process_voice():
     app.logger.info("Received POST request to /process_voice")

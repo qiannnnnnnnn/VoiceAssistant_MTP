@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function() {
           const timestamp = Date.now();
           const facialData = { timestamp, expressions: resizedDetections.map(det => det.expressions) };
           allFacialData.push(facialData);
-      }, 100)
+      }, 1000) //修改表情识别间隔
     });
 
 
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log("Recording started.");
 
     var textElement = document.createElement('p');
-    textElement.innerHTML = "Hi! I'm Lumi, your voice assistant.<br>I'll be guiding you through a short experiment that should take about 10 minutes.<br><br>Here's how it will go:<br><br>1. I'll present you with a short text to read.<br>2. We'll then move on to three tasks. In each task, you'll give me instructions by voice, telling me what you want me to accomplish.<br>3. Throughout the experiment, I'll ask you to share how you're feeling.<br>4. Finally, you'll have the chance to record your overall experience.<br><br>Let's Begin!";
+    textElement.innerHTML = "Hi! I'm Lumi, your voice assistant.<br>I'd like to guide you through a quick experiment that shouldn't take longer than 15 minutes. <br><br>Here's what to expect:<br><br>Firsty, imagine yourself relaxing at your own home, using your voice to get things done.<br>Secondly,There will be three tasks in total, Lumi is here to assist you.<br>After every task, you'll be asked to fill out a short survey, please use mouse to click the survey button when needed<br>Finally, you'll have the chance to record your overall experience about the experiment.<br><br>Let's Begin!";
     textElement.style.textAlign = "justify";
     textElement.style.fontSize = "30px";
     textElement.style.fontFamily = "San Francisco, system-ui";
@@ -269,8 +269,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-    // 设置保存时间，分*秒*毫秒
-    setInterval(saveDataToFile, 1 * 60 * 1000);
+    // 设置保存文件的时间，分*秒*毫秒
+    setInterval(saveDataToFile, 10 * 60 * 1000);
 
     // 在需要保存数据时调用此函数
     function saveDataToFile() {
@@ -295,3 +295,4 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 });
+

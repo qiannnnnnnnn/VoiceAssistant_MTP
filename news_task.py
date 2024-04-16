@@ -3,33 +3,30 @@ from gtts import gTTS
 import os
 import subprocess
 from elevenlabs.client import ElevenLabs
+import requests
 from flask import redirect, url_for
 import uuid
+import time
+
+
+# 改好了暂时，Neutral voice
 
 # Initialize the speech recognition
 recognizer = sr.Recognizer()
 
 # call elevenlab Api
 client = ElevenLabs(
-    api_key="e0c5f7b856cf59ef10a4253335714486",  # Replace with your API key
+    api_key="7fd8bbe38e87e100e7a0991940b869d8",  # Replace with your API key
 )
 
-'''
-生成次数用完了暂时先这样，不克隆新的
-# Clone the voice once
-voice = client.clone(
-    name="Qian",
-    description="dialogue_voice test",
-    files=["output/output_pitch_changed_1.mp3"],  # Use the provided audio file path
-)
-'''
 
-voice_name = "Qian_pitch1"
+#url="https://elevenlabs.io/app/voice-lab/share/9ad8a0e0919d3206eabd2485d79f503178aaad3f993962c01354a8557fd44941/w8Akhda5CCFWPMMlvVfN"
+#response = requests.request("GET", url)
+#print(response.text)
 
-
-def play_generated_audio(text, voice_name="Qian"):
+def play_generated_audio(text, voice):
     try:
-        audio_generator = client.generate(text=text, voice=voice_name)
+        audio_generator = client.generate(text=text, voice=voice)
 
         # Use subprocess.Popen() to play the generated audio
         ffplay_process = subprocess.Popen(["ffplay", "-autoexit", "-nodisp", "-"], stdin=subprocess.PIPE,
@@ -44,7 +41,6 @@ def play_generated_audio(text, voice_name="Qian"):
         ffplay_process.wait()
     except Exception as e:
         print("Error while playing audio:", e)
-
 
 def tts_init(text, lang="en"):
     return gTTS(text=text, lang=lang)
@@ -85,28 +81,25 @@ def listen():
         return "", ""
 
 
-import os
-import uuid
-import time
 
-def news_dialogue():
+def news_dialogue(voice):
     # save all user's voice
-    os.makedirs("dialogues", exist_ok=True)
+    os.makedirs("dialogues_news", exist_ok=True)
 
     # Generate a unique conversation ID
     dialog_id = str(uuid.uuid4())
 
     # Create a new folder with the conversation ID
-    os.makedirs(os.path.join("dialogues", dialog_id), exist_ok=True)
+    os.makedirs(os.path.join("dialogues_news", dialog_id), exist_ok=True)
 
     start_time = time.time()
-    while time.time() - start_time < 1:  # Interact for one minute
+    while time.time() - start_time < 150:  # Interact for one minute
         # Listen for user input
         input_text, input_audio_file = listen()
 
         # Save the user's input audio
         if input_audio_file:
-            os.rename(input_audio_file, os.path.join("dialogues", dialog_id, "input.wav"))
+            os.rename(input_audio_file, os.path.join("dialogues_news", dialog_id, "input.wav"))
 
         # Check if user says news/podcast
         if "news" in input_text:
@@ -115,40 +108,43 @@ def news_dialogue():
                                  "Meanwhile, scientists announced a groundbreaking discovery in renewable energy technology,"
                                  " offering hope for a greener future. In other news, "
                                  "the stock market saw significant fluctuations, prompting investors to reassess their portfolios. "
-                                 "Stay tuned for further updates on these developing stories and more.")
+                                 "Stay tuned for further updates on these developing stories and more.",voice)
         elif "pause" in input_text:
             play_generated_audio(
-                "Pausing the current news update. Stay tuned as we'll resume shortly after this brief pause.")
+                "Pausing the current news update. Stay tuned as we'll resume shortly after this brief pause.",voice)
         elif "next" in input_text:
-            play_generated_audio("Moving on to the next news segment. Stay informed with our continuous coverage.")
+            play_generated_audio("Moving on to the next news segment. Stay informed with our continuous coverage.",voice)
         elif "thank" in input_text:
-            play_generated_audio("You're welcome. What else can I do for you?")
+            play_generated_audio("You're welcome. What else can I do for you?",voice)
         else:
-            play_generated_audio("Sorry,I didn't catch that. Could you please ask a question about the news?")
+            play_generated_audio("Sorry,I didn't catch that. Could you please ask a question about the news?",voice)
 
     # Prompt the user for continuation
-    play_generated_audio("Do you want to continue with another news action?")
+    play_generated_audio("Do you want to continue with another news action?",voice)
 
     # Listen for user response
     text, audio_file = listen()
 
     # Check if the user wants to continue
     if "yes" in text or "continue" in text:
-        news_dialogue()
+        news_dialogue(voice)
     else:
-        play_generated_audio("Okay,have a nice day")
+        play_generated_audio("Okay,have a nice day",voice)
 
 
 def news_task():
+    # Neural Voice
+    #voice = "BzGBcwax6fZdL0A0cNrE"
+    voice = "bTs5u126Wd7y2pljrAbG"
 
     # Welcome message
-    play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?")
+    play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?",voice)
 
     # Proceed with music-related dialogue
-    news_dialogue()
+    news_dialogue(voice)
 
     # Goodbye message
-    play_generated_audio("This round is done, please fill in the survey")
+    play_generated_audio("This round is done, please fill in the survey",voice)
 
 
 

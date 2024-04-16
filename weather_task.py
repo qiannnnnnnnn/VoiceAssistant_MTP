@@ -5,31 +5,22 @@ import subprocess
 from elevenlabs.client import ElevenLabs
 from flask import redirect, url_for
 import uuid
+import time
+
+#改好了暂时！！ clone voice
 
 # Initialize the speech recognition
 recognizer = sr.Recognizer()
 
 # call elevenlab Api
 client = ElevenLabs(
-    api_key="e0c5f7b856cf59ef10a4253335714486",  # Replace with your API key
+    api_key="7fd8bbe38e87e100e7a0991940b869d8",  # Replace with your API key
 )
 
-'''
-生成次数用完了暂时先这样，不克隆新的
-# Clone the voice once
-voice = client.clone(
-    name="Qian",
-    description="dialogue_voice test",
-    files=["output/output_pitch_changed_1.mp3"],  # Use the provided audio file path
-)
-'''
 
-voice_name = "Qian_pitch_3"
-
-
-def play_generated_audio(text, voice_name="Qian"):
+def play_generated_audio(text, voice):
     try:
-        audio_generator = client.generate(text=text, voice=voice_name)
+        audio_generator = client.generate(text=text, voice=voice)
 
         # Use subprocess.Popen() to play the generated audio
         ffplay_process = subprocess.Popen(["ffplay", "-autoexit", "-nodisp", "-"], stdin=subprocess.PIPE,
@@ -45,16 +36,13 @@ def play_generated_audio(text, voice_name="Qian"):
     except Exception as e:
         print("Error while playing audio:", e)
 
-
 def tts_init(text, lang="en"):
     return gTTS(text=text, lang=lang)
-
 
 def speak(text):
     engine = tts_init(text)
     engine.save("output.mp3")
     os.system("mpg321 output.mp3")
-
 
 def listen():
     """Records audio from the microphone, saves it to a file, and performs speech recognition."""
@@ -69,7 +57,7 @@ def listen():
         print("You said:", text)
 
         # Save the recorded audio to a file
-        audio_filename = os.path.join("dialogues", str(uuid.uuid4()) + ".wav")
+        audio_filename = os.path.join("dialogues_weather", str(uuid.uuid4()) + ".wav")
         with open(audio_filename, "wb") as f:
             f.write(audio.get_wav_data())
 
@@ -84,29 +72,18 @@ def listen():
         print("Error while processing audio:", e)
         return "", ""
 
-
-import os
-import uuid
-import time
-
-def weather_dialogue():
-    # save all user's voice
-    os.makedirs("dialogues_task3", exist_ok=True)
-
+def weather_dialogue(voice):
     # Generate a unique conversation ID
     dialog_id = str(uuid.uuid4())
 
-    # Create a new folder with the conversation ID
-    os.makedirs(os.path.join("dialogues_task3", dialog_id), exist_ok=True)
-
     start_time = time.time()
-    while time.time() - start_time < 3:  # Interact for one minute
+    while time.time() - start_time < 150:  # Interact for one minute
         # Listen for user input
         input_text, input_audio_file = listen()
 
         # Save the user's input audio
         if input_audio_file:
-            os.rename(input_audio_file, os.path.join("dialogues_task3", dialog_id, "input.wav"))
+            os.rename(input_audio_file, os.path.join("dialogues_weather", dialog_id, "input.wav"))
 
         # Check if user requests music
         if "check" in input_text and "weather" in input_text:
@@ -114,41 +91,46 @@ def weather_dialogue():
                                  "It seems to be a beautiful day with plenty of sunshine. "                               
                                  "It's perfect weather for wearing light and comfortable clothing. "
                                  "You might want to consider outdoor activities such as picnics, walks in the park, or cycling. "
-                                 "Enjoy the lovely weather!")
+                                 "Enjoy the lovely weather!", voice)
         elif "temperature" in input_text:
-            play_generated_audio("The temperature is around 20 degrees Celsius, and there's hardly any wind. ")
+            play_generated_audio("The temperature is around 20 degrees Celsius, and there's hardly any wind. ", voice)
         elif "wind speed" in input_text:
-            play_generated_audio("Checking the wind speed.There's hardly any wind.")
+            play_generated_audio("Checking the wind speed.There's hardly any wind.", voice)
         elif "rain" in input_text or "rainfall" in input_text:
-            play_generated_audio("Checking rainfall.There is no rainfall today.")
+            play_generated_audio("Checking rainfall.There is no rainfall today.", voice)
         elif "thank" in input_text:
-            play_generated_audio("You're welcome. What else can I do for you?")
+            play_generated_audio("You're welcome. What else can I do for you?", voice)
         else:
-            play_generated_audio("Sorry, I didn't understand your request.")
+            play_generated_audio("Sorry, I didn't understand your request.", voice)
 
     # Prompt the user for continuation
-    play_generated_audio("Do you want to continue with another weather action?")
+    play_generated_audio("Do you want to continue with another weather action?", voice)
 
     # Listen for user response
     text, audio_file = listen()
 
     # Check if the user wants to continue
     if "yes" in text or "continue" in text:
-        weather_dialogue()
+        weather_dialogue(voice)
     else:
-        play_generated_audio("Okay")
-
+        play_generated_audio("Okay", voice)
 
 def weather_task():
-    # Welcome message
-    play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?")
+    # Initialize voice clone
+    voice = client.clone(
+        name="Participant",
+        description="Participant's cloned voice ",
+        files=["recordings/recorded_audio.wav"],  # the recordfile, need to change the record loop
+    )
 
-    # Proceed with music-related dialogue
-    weather_dialogue()
+    # Welcome message
+    play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?", voice)
+
+    # Proceed with weather-related dialogue
+    weather_dialogue(voice)
 
     # Goodbye message
-    play_generated_audio("This round is done, please fill in the survey")
-
+    play_generated_audio("This round is done, please fill in the survey", voice)
 
 
 if __name__ == "__main__":
