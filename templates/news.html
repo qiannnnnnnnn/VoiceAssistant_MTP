@@ -11,21 +11,20 @@
     <img src="/static/image/logo.png" alt="Logo">
 
     <!--指令文本 -->
-    <div id="alarmInstructions">
-        <ul>
-            <li>You're required to control devices at home, you can say:</li>
-            <li class="important">"Turn off the lights"</li>
-            <li class="important">"Set temperature"</li>
-            <li class="important">"Lock the door"</li>
-            <li>......</li>
-        </ul>
+    <div id="musicInstructions">
+      <ul>
+        <li>You're required to check the news, you can say:</li>
+        <li class = important>"News today" </li>
+        <li class = important>"Pause the news" </li>
+        <li class = important>"Next news"</li>
+        <li>......</Li>
+      </ul>
     </div>
-
    <!-- face detection    style="display:none;" -->
     <video id="video" width="120" height="90" autoplay muted style="display:none;" ></video>
 
-    <button id="surveyButton_devices" class="surveyButton" onclick="goToSurveyPage_devices()">Go To Survey</button>
-    <button id="processDevicesButton" class="processButton" onclick="processDevices()">Process Control Devices Task</button>
+    <button id="surveyButton" class="surveyButton" onclick="goToSurveyPage()">Go To Survey</button>
+    <button id="processNewsButton" class="processButton" onclick="processNews()">Process Control Devices Task</button>
 
 
     <script src="/static/js/script.js"></script>

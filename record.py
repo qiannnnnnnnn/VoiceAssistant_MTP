@@ -3,7 +3,7 @@ import pyaudio
 import wave
 import subprocess
 
-def record_audio(output_dir, filename, duration=3, sample_rate=44100, channels=1, chunk=1024, format=pyaudio.paInt16):
+def record_audio(output_dir, filename, duration=30, sample_rate=44100, channels=1, chunk=1024, format=pyaudio.paInt16):
     audio = pyaudio.PyAudio()
 
     # Open a new stream to record audio
@@ -37,10 +37,9 @@ def record_audio(output_dir, filename, duration=3, sample_rate=44100, channels=1
 
 def change_pitch(input_file, output_file, pitch_factor):
     try:
-        subprocess.call(["ffmpeg", "-i", input_file, "-af", "rubberband=pitch={}".format(pitch_factor), output_file])
+        # Use '-y' option to overwrite existing output file
+        subprocess.call(["ffmpeg", "-i", input_file, "-af", "rubberband=pitch={}".format(pitch_factor), "-y", output_file])
         return output_file
     except Exception as e:
         print("Error occurred while changing pitch:", e)
         return None
-
-

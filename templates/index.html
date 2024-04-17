@@ -23,14 +23,18 @@
     </div>
 
     <!-- face detection    style="display:none;" -->
-    <video id="video" width="120" height="90" autoplay muted ></video>
+    <video id="video" width="120" height="90" autoplay muted style="display:none;"></video>
 
     <!-- buttons-->
-    <button id="startButton" class="startButton" onclick="startRecording()">Start</button>
+    <button id="startButton" class="startButton" onclick="startRecording()">Click and read out loud the text below</button>
 
     <button id="recognizingButton"  class="startButton"  style="display: none;">Recognizing...</button>
 
-    <button id="surveyButton" class="surveyButton" onclick="goToSurveyPage()">Go To Survey</button>
+    <!--<button id="surveyButton" class="surveyButton" onclick="goToSurveyPage()">Go To Survey</button>-->
+
+    <a href="news.html">
+        <button  id="nextButton_news" class="nextTaskButton">Next Task</button>
+    </a>
 
     <script src="/static/js/script.js"></script>
     <script src="/static/js/face-api.min.js"></script>

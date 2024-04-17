@@ -83,6 +83,11 @@ def survey_devices():
 def alarm_page():
     return render_template('alarm.html')
 
+
+@app.route('/news.html')
+def news_page():
+    return render_template('news.html')
+
 @app.route('/weather.html')
 def weather_page():
     return render_template('weather.html')
@@ -100,6 +105,20 @@ def feedback_page():
     return render_template('feedback.html')
 
 
+from flask import jsonify  # 导入 jsonify
+
+'''
+@app.route('/process_voice', methods=['POST'])
+def process_voice():
+    app.logger.info("Received POST request to /process_voice")
+
+    # 执行 news_task() 函数
+    news_task()
+
+    # 返回一个表示成功的 JSON 响应
+    return jsonify({"success": True})
+'''
+
 @app.route('/record_voice', methods=['POST'])
 def record_voice():
     output_dir = "recordings"
@@ -110,6 +129,10 @@ def record_voice():
 
         if pitch_changed_file:
             print("Modified audio saved at:", pitch_changed_file)
+
+            # 调用 process_voice() 函数来处理录音后的自动任务执行
+            # process_voice()  # 将这行代码移到这里
+
             return send_file(pitch_changed_file, as_attachment=True)
         else:
             return "Error changing pitch.", 500
@@ -119,21 +142,22 @@ def record_voice():
 
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
-@app.route('/process_voice', methods=['POST'])
-def process_voice():
-    app.logger.info("Received POST request to /process_voice")
-
-    news_task()
-    return "done"
-
+'''
 @app.route('/process_alarm_task',methods=['POST'])
 def process_alarm_task():
 
     alarm_task()
 
     return "done"
+'''
+
+
+@app.route('/process_news_task',methods=['POST'])
+def process_news_task():
+
+    news_task()
+    return "done"
+
 
 @app.route('/process_weather_task',methods=['POST'])
 def process_weather_task():

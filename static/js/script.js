@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const surveyButton_devices = document.getElementById('surveyButton_devices');
     const surveyButton_weather = document.getElementById('surveyButton_weather');
     const processAlarmButton = document.getElementById('processAlarmButton');
+    const processNewsButton = document.getElementById('processNewsButton');
     const processDevicesButton = document.getElementById('processDevicesButton');
     const processWeatherButton = document.getElementById('processWeatherButton');
     const startFeedbackButton = document.getElementById("startFeedbackButton");
@@ -46,6 +47,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     if (processAlarmButton){
         processAlarmButton.addEventListener('click',processAlarm)
+    }
+
+     if (processNewsButton){
+        processNewsButton.addEventListener('click',processNews)
     }
 
     if (processDevicesButton){
@@ -143,13 +148,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 1000);
     }
 
+
+
     function startRecording() {
     console.log("Recording started.");
 
     var textElement = document.createElement('p');
+    textElement.id = "textElement"; // 设置文本元素的 ID
     textElement.innerHTML = "Hi! I'm Lumi, your voice assistant.<br>I'd like to guide you through a quick experiment that shouldn't take longer than 15 minutes. <br><br>Here's what to expect:<br><br>Firsty, imagine yourself relaxing at your own home, using your voice to get things done.<br>Secondly,There will be three tasks in total, Lumi is here to assist you.<br>After every task, you'll be asked to fill out a short survey, please use mouse to click the survey button when needed<br>Finally, you'll have the chance to record your overall experience about the experiment.<br><br>Let's Begin!";
     textElement.style.textAlign = "justify";
-    textElement.style.fontSize = "30px";
+    textElement.style.fontSize = "25px";
     textElement.style.fontFamily = "San Francisco, system-ui";
     textElement.style.maxWidth = "600px";
     textElement.style.margin = "0 auto";
@@ -166,9 +174,9 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(response => {
         if (response.ok) {
             console.log("Recording started.");
-            processVoice();
-            document.body.removeChild(textElement);
-            document.getElementById("musicInstructions").style.display = "block";
+            //processVoice(); // 在录音成功后调用 processVoice() 函数
+            // document.body.removeChild(textElement); // 这里的移除可以注释掉，因为在 processVoice() 中会处理
+            // document.getElementById("musicInstructions").style.display = "block"; // 这里的显示也可以注释掉，因为在 processVoice() 中会处理
         } else {
             console.error("Failed to start recording.");
         }
@@ -178,26 +186,50 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     document.getElementById("startButton").style.display = "none";
 }
-    // Function to process voice after recording
-    function processVoice() {
+
+    /*
+// Function to process voice after recording
+//先不用，改单独的
+function processVoice() {
     // Perform AJAX request to process voice
     fetch('/process_voice', {
         method: 'POST'
     })
-    .then(response => response.text())
-    .then(data => {
-        // Display response in the designated div
-        document.getElementById("responseText").innerText = data;
-
-        // Reset button text and hide recognizing button
-        document.getElementById("recognizingButton").style.display = "none";
-
-        // 显示音乐指令文本
-        document.getElementById("musicInstructions").style.display = "block";
+    .then(response => {
+        if (response.ok) {
+            console.log("Voice processed successfully.");
+            // 隐藏原来的文本
+            document.getElementById("textElement").style.display = "none"; // 隐藏原始文本
+            // 显示音乐指令文本
+            document.getElementById("musicInstructions").style.display = "block";
+        } else {
+            console.error("Error processing voice.");
+        }
     })
-    .catch(error => console.error('Error:', error));
-}
+    .catch(error => {
+        console.error("Error processing voice:", error);
+    });
 
+    // Reset button text and hide recognizing button
+    document.getElementById("recognizingButton").style.display = "none";
+}//
+*/
+    function processNews() {
+    fetch('/process_news_task', {
+        method: 'POST'
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Devices task processed.");
+            // Optionally, handle any UI updates after processing the task
+        } else {
+            console.error("Failed to process Devices task.");
+        }
+    })
+    .catch(error => {
+        console.error("Error processing Devices task:", error);
+    });
+    }
 
     function goToSurveyPage() {
         window.location.href = "/survey";
@@ -270,7 +302,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     // 设置保存文件的时间，分*秒*毫秒
-    setInterval(saveDataToFile, 10 * 60 * 1000);
+    setInterval(saveDataToFile, 5 * 60 * 1000);
 
     // 在需要保存数据时调用此函数
     function saveDataToFile() {

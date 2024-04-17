@@ -65,7 +65,7 @@ def listen():
         print("You said:", text)
 
         # Save the recorded audio to a file
-        audio_filename = os.path.join("dialogues", str(uuid.uuid4()) + ".wav")
+        audio_filename = os.path.join("dialogues_news", str(uuid.uuid4()) + ".wav")
         with open(audio_filename, "wb") as f:
             f.write(audio.get_wav_data())
 

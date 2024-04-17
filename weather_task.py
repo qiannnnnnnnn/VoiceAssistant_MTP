@@ -72,9 +72,16 @@ def listen():
         print("Error while processing audio:", e)
         return "", ""
 
+
 def weather_dialogue(voice):
+    # save all user's voice
+    os.makedirs("dialogues_weather", exist_ok=True)
+
     # Generate a unique conversation ID
     dialog_id = str(uuid.uuid4())
+
+    # Create a new folder with the conversation ID
+    os.makedirs(os.path.join("dialogues_weather", dialog_id), exist_ok=True)
 
     start_time = time.time()
     while time.time() - start_time < 150:  # Interact for one minute
@@ -85,26 +92,27 @@ def weather_dialogue(voice):
         if input_audio_file:
             os.rename(input_audio_file, os.path.join("dialogues_weather", dialog_id, "input.wav"))
 
-        # Check if user requests music
-        if "check" in input_text and "weather" in input_text:
-            play_generated_audio("Currently checking the weather for Eindhoven. "
-                                 "It seems to be a beautiful day with plenty of sunshine. "                               
-                                 "It's perfect weather for wearing light and comfortable clothing. "
-                                 "You might want to consider outdoor activities such as picnics, walks in the park, or cycling. "
-                                 "Enjoy the lovely weather!", voice)
-        elif "temperature" in input_text:
-            play_generated_audio("The temperature is around 20 degrees Celsius, and there's hardly any wind. ", voice)
-        elif "wind speed" in input_text:
-            play_generated_audio("Checking the wind speed.There's hardly any wind.", voice)
-        elif "rain" in input_text or "rainfall" in input_text:
-            play_generated_audio("Checking rainfall.There is no rainfall today.", voice)
-        elif "thank" in input_text:
-            play_generated_audio("You're welcome. What else can I do for you?", voice)
-        else:
-            play_generated_audio("Sorry, I didn't understand your request.", voice)
+            # Check if user requests music
+            if "check" in input_text and "weather" in input_text:
+                play_generated_audio("Currently checking the weather for Eindhoven. "
+                                     "It seems to be a beautiful day with plenty of sunshine. "
+                                     "It's perfect weather for wearing light and comfortable clothing. "
+                                     "You might want to consider outdoor activities such as picnics, walks in the park, or cycling. "
+                                     "Enjoy the lovely weather!", voice)
+            elif "temperature" in input_text:
+                play_generated_audio("The temperature is around 20 degrees Celsius, and there's hardly any wind. ",
+                                     voice)
+            elif "wind speed" in input_text:
+                play_generated_audio("Checking the wind speed.There's hardly any wind.", voice)
+            elif "rain" in input_text or "rainfall" in input_text:
+                play_generated_audio("Checking rainfall.There is no rainfall today.", voice)
+            elif "thank" in input_text:
+                play_generated_audio("You're welcome. What else can I do for you?", voice)
+            else:
+                play_generated_audio("Sorry, I didn't understand your request.", voice)
 
     # Prompt the user for continuation
-    play_generated_audio("Do you want to continue with another weather action?", voice)
+    play_generated_audio("Do you want to continue with another news action?",voice)
 
     # Listen for user response
     text, audio_file = listen()
@@ -113,7 +121,8 @@ def weather_dialogue(voice):
     if "yes" in text or "continue" in text:
         weather_dialogue(voice)
     else:
-        play_generated_audio("Okay", voice)
+        play_generated_audio("Okay,have a nice day",voice)
+
 
 def weather_task():
     # Initialize voice clone

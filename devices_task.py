@@ -63,7 +63,7 @@ def listen():
         print("You said:", text)
 
         # Save the recorded audio to a file
-        audio_filename = os.path.join("dialogues", str(uuid.uuid4()) + ".wav")
+        audio_filename = os.path.join("dialogues_devices", str(uuid.uuid4()) + ".wav")
         with open(audio_filename, "wb") as f:
             f.write(audio.get_wav_data())
 
@@ -79,7 +79,6 @@ def listen():
         return "", ""
 
 
-
 def devices_dialogue(voice):
     # save all user's voice
     os.makedirs("dialogues_devices", exist_ok=True)
@@ -90,6 +89,7 @@ def devices_dialogue(voice):
     # Create a new folder with the conversation ID
     os.makedirs(os.path.join("dialogues_devices", dialog_id), exist_ok=True)
 
+        # Save the user's input audio
     start_time = time.time()
     while time.time() - start_time < 150:  # Interact for one minute
         # Listen for user input
@@ -101,30 +101,36 @@ def devices_dialogue(voice):
 
         # Check if user requests music
         if "turn" in input_text:
-            play_generated_audio("Alright, I've turned off the lights in the bedroom,have a good night. If you need, you can also ask me to control other devices",voice)
+            play_generated_audio(
+                "Alright, I've turned off the lights in the bedroom,have a good night. If you need, you can also ask me to control other devices",
+                voice)
 
         elif "set" in input_text:
-            play_generated_audio("Got it. The living room temperature has been set to 21 degrees. Let me know if you need any further adjustments or if there's anything else I can assist you with.",voice)
+            play_generated_audio(
+                "Got it. The living room temperature has been set to 21 degrees. Let me know if you need any further adjustments or if there's anything else I can assist you with.",
+                voice)
 
         elif "lock" in input_text:
-            play_generated_audio("Front door successfully locked. Your home is now secure.If you need to grant access to someone or perform any other tasks, feel free to let me know.",voice)
+            play_generated_audio(
+                "Front door successfully locked. Your home is now secure.If you need to grant access to someone or perform any other tasks, feel free to let me know.",
+                voice)
 
         elif "alarm" in input_text:
-            play_generated_audio("Alarm successfully set. Get ready for a productive day ahead!",voice)
+            play_generated_audio("Alarm successfully set. Get ready for a productive day ahead!", voice)
 
         elif "snooze" in input_text:
-            play_generated_audio("Snoozing the alarm. Enjoy a few more moments of rest.",voice)
+            play_generated_audio("Snoozing the alarm. Enjoy a few more moments of rest.", voice)
 
         elif "stop" in input_text in input_text:
-            play_generated_audio("Alarm stopped. Have a wonderful day!",voice)
+            play_generated_audio("Alarm stopped. Have a wonderful day!", voice)
 
         elif "thank" in input_text:
-            play_generated_audio("You're welcome. What else can I do for you?",voice)
+            play_generated_audio("You're welcome. What else can I do for you?", voice)
         else:
-            play_generated_audio("Sorry, I didn't understand your request.",voice)
+            play_generated_audio("Sorry, I didn't understand your request.", voice)
 
     # Prompt the user for continuation
-    play_generated_audio("Do you want to continue with controlling other devices",voice)
+    play_generated_audio("Do you want to continue with controlling other devices", voice)
 
     # Listen for user response
     text, audio_file = listen()
@@ -133,8 +139,7 @@ def devices_dialogue(voice):
     if "yes" in text or "continue" in text:
         devices_dialogue(voice)
     else:
-        play_generated_audio("Okay",voice)
-
+        play_generated_audio("Okay", voice)
 
 def devices_task():
     # Voice 50%
@@ -144,14 +149,13 @@ def devices_task():
         files=["recordings/output_changed.wav"],  # Use the provided audio file path
     )
     # Welcome message
-    play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?")
+    play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?",voice)
 
     # Proceed with music-related dialogue
     devices_dialogue(voice)
 
     # Goodbye message
-    play_generated_audio("This round is done, please fill in the survey")
-
+    play_generated_audio("This round is done, please fill in the survey",voice)
 
 
 if __name__ == "__main__":
