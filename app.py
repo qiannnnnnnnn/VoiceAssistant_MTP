@@ -55,7 +55,7 @@ def feedback_page():
     return render_template('feedback.html')
 
 
-
+'''
 @app.route('/record_voice', methods=['POST'])
 def record_voice():
     output_dir = "recordings"
@@ -76,7 +76,7 @@ def record_voice():
     except Exception as e:
         print("Error recording audio:", e)
         return "Error recording audio.", 500
-
+'''
 
 
 '''
@@ -88,6 +88,23 @@ def process_alarm_task():
     return "done"
 '''
 
+@app.route('/record_voice', methods=['POST'])
+def record_voice():
+    output_dir = "recordings"
+    try:
+        filename = request.form.get('filename', 'recorded_audio.wav')
+        audio_file = record_audio(output_dir, filename)
+        pitch_changed_file = change_pitch(audio_file, os.path.join(output_dir, "pitch_changed.wav"), 1.1892)
+
+        if pitch_changed_file:
+            print("Modified audio saved at:", pitch_changed_file)
+
+            return send_file(pitch_changed_file, as_attachment=True)
+        else:
+            return "Error changing pitch.", 500
+    except Exception as e:
+        print("Error recording audio:", e)
+        return "Error recording audio.", 500
 
 @app.route('/process_news_task',methods=['POST'])
 def process_news_task():
