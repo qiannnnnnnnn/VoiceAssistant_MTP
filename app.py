@@ -5,7 +5,7 @@ from alarm_task import alarm_task
 from weather_task import weather_task
 from feedback import record_feedback
 from devices_task import devices_task
-from flask_socketio import SocketIO
+
 from flask import Flask, request, send_file
 import record
 

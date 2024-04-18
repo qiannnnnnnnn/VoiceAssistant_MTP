@@ -8,6 +8,10 @@ from flask import redirect, url_for
 import uuid
 import time
 
+from pydub.playback import play
+import pygame
+from io import BytesIO
+
 
 # 改好了暂时，Neutral voice
 
@@ -20,18 +24,22 @@ client = ElevenLabs(
 )
 
 
-#url="https://elevenlabs.io/app/voice-lab/share/9ad8a0e0919d3206eabd2485d79f503178aaad3f993962c01354a8557fd44941/w8Akhda5CCFWPMMlvVfN"
-#response = requests.request("GET", url)
-#print(response.text)
 
+
+
+"""
 def play_generated_audio(text, voice):
     try:
         audio_generator = client.generate(text=text, voice=voice)
 
         # Use subprocess.Popen() to play the generated audio
-        ffplay_process = subprocess.Popen(["ffplay", "-autoexit", "-nodisp", "-"], stdin=subprocess.PIPE,
-                                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
+        #ffplay_process = subprocess.Popen(["ffplay", "vn", "-"], stdin=subprocess.PIPE,
+                                         # stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        ffplay_command = ["ffplay","-autoexit","-nodisp","-i","pipe:0"]
+        ffplay_process = subprocess.Popen(ffplay_command,stdin=subprocess.PIPE,
+                                          stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
+                                          shell=True)
+        
         # Write audio stream to ffplay process's standard input
         for chunk in audio_generator:
             ffplay_process.stdin.write(chunk)
@@ -41,6 +49,27 @@ def play_generated_audio(text, voice):
         ffplay_process.wait()
     except Exception as e:
         print("Error while playing audio:", e)
+"""
+
+#pygame 
+def play_generated_audio(text, voice):
+    try:
+        audio_generator = client.generate(text=text, voice=voice)
+
+        audio_bytes = b"".join(audio_generator)
+        #load audio
+        pygame.mixer.init()
+        pygame.mixer.music.load(BytesIO(audio_bytes))
+
+        #play
+        pygame.mixer.music.play()
+
+        #wait for the audio to finish
+        while pygame.mixer.music.get_busy():
+            pygame.time.Clock().tick(10)
+    except Exception as e:
+        print("Eror while playing audio:",e)
+
 
 def tts_init(text, lang="en"):
     return gTTS(text=text, lang=lang)
@@ -52,8 +81,14 @@ def speak(text):
     os.system("mpg321 output.mp3")
 
 
+import random
+
+
 def listen():
     """Records audio from the microphone, saves it to a file, and performs speech recognition."""
+    
+    recognizer = sr.Recognizer()
+
     with sr.Microphone() as source:
         print("Speak now:")
         recognizer.adjust_for_ambient_noise(source)  # Adapt to ambient noise
@@ -65,7 +100,18 @@ def listen():
         print("You said:", text)
 
         # Save the recorded audio to a file
-        audio_filename = os.path.join("dialogues_news", str(uuid.uuid4()) + ".wav")
+        dialogues_dir = "dialogues_news"
+        if not os.path.exists(dialogues_dir):
+            os.makedirs(dialogues_dir)
+
+        # Generate a unique filename
+        while True:
+            timestamp = int(time.time() * 1000)
+            random_component = random.randint(0, 9999)
+            audio_filename = os.path.join(dialogues_dir, f"{timestamp}_{random_component}.wav")
+            if not os.path.exists(audio_filename):
+                break
+
         with open(audio_filename, "wb") as f:
             f.write(audio.get_wav_data())
 
@@ -82,7 +128,8 @@ def listen():
 
 
 
-def news_dialogue(voice):
+
+def news_dialogue(voice):                                                                                                                                                                                                           
     # save all user's voice
     os.makedirs("dialogues_news", exist_ok=True)
 
@@ -90,16 +137,19 @@ def news_dialogue(voice):
     dialog_id = str(uuid.uuid4())
 
     # Create a new folder with the conversation ID
-    os.makedirs(os.path.join("dialogues_news", dialog_id), exist_ok=True)
+    dialog_folder_path = os.path.join("dialogues_news", dialog_id)
+    os.makedirs(dialog_folder_path, exist_ok=True)
 
     start_time = time.time()
-    while time.time() - start_time < 150:  # Interact for one minute
+    while time.time() - start_time < 150:  # Interact time, in seconds
         # Listen for user input
         input_text, input_audio_file = listen()
 
         # Save the user's input audio
         if input_audio_file:
-            os.rename(input_audio_file, os.path.join("dialogues_news", dialog_id, "input.wav"))
+            timestamp = int(time.time() * 1000)
+            unique_input_filename = os.path.join(dialog_folder_path, f"input_{timestamp}.wav")
+            os.rename(input_audio_file, unique_input_filename)
 
         # Check if user says news/podcast
         if "news" in input_text:
@@ -130,7 +180,6 @@ def news_dialogue(voice):
         news_dialogue(voice)
     else:
         play_generated_audio("Okay,have a nice day",voice)
-
 
 def news_task():
     # Neural Voice
