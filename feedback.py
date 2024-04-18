@@ -3,7 +3,8 @@ import pyaudio
 import wave
 from flask import current_app as app
 
-def record_feedback(output_dir="feedback", duration=30, sample_rate=44100, channels=1, chunk=1024, format=pyaudio.paInt16):
+def record_feedback(output_dir="feedback", duration=60, sample_rate=44100,
+                    channels=1, chunk=1024, format=pyaudio.paInt16):
     with app.app_context():  # 创建应用程序上下文
         # 检查输出目录是否存在，如果不存在则创建它
         if not os.path.exists(output_dir):

@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const processDevicesButton = document.getElementById('processDevicesButton');
     const processWeatherButton = document.getElementById('processWeatherButton');
     const startFeedbackButton = document.getElementById("startFeedbackButton");
+    const nextButton_weather= document.getElementById("nextButton_weather");
     const video = document.getElementById('video');
     const countdownDisplay = document.getElementById('countdown');
 
@@ -27,38 +28,51 @@ document.addEventListener("DOMContentLoaded", function() {
     if (startButton) {
         startButton.addEventListener("click", function() {
             startRecording();
+
         });
     }
 
     if (surveyButton) {
         surveyButton.addEventListener("click", goToSurveyPage);
+
     }
 
     if (surveyButton_alarm) {
         surveyButton_alarm.addEventListener("click", goToSurveyPage_alarm);
+        //surveyButton_alarm.disabled = true;
     }
 
     if (surveyButton_devices) {
         surveyButton_devices.addEventListener("click", goToSurveyPage_devices);
+        //surveyButton_devices.disabled = true;
     }
 
     if (surveyButton_weather) {
         surveyButton_weather.addEventListener("click", goToSurveyPage_weather);
+        //surveyButton_weather.disabled = true;
     }
     if (processAlarmButton){
         processAlarmButton.addEventListener('click',processAlarm)
+        //processAlarmButton.disabled = true;
     }
 
      if (processNewsButton){
         processNewsButton.addEventListener('click',processNews)
+       // processNewsButton.disabled = true;
     }
 
     if (processDevicesButton){
         processDevicesButton.addEventListener('click',processDevices)
+        //processNewsButton.disabled = true;
     }
 
     if (processWeatherButton){
         processWeatherButton.addEventListener('click',processWeather)
+        //processWeatherButton.disabled = true;
+    }
+
+    if (nextButton_weather){
+        nextButton_weather.addEventListener('click',goToWeatherPage)
     }
 
 
@@ -130,23 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-    if (countdownDisplay) {
-        countdown();
-    }
 
-    function countdown() {
-        var seconds = 30;
-
-        var countdownInterval = setInterval(function() {
-            seconds--;
-            countdownDisplay.textContent = seconds;
-
-            if (seconds <= 0) {
-                clearInterval(countdownInterval);
-                countdownDisplay.textContent = 'Time up!';
-            }
-        }, 1000);
-    }
 
 
 
@@ -155,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var textElement = document.createElement('p');
     textElement.id = "textElement"; // 设置文本元素的 ID
-    textElement.innerHTML = "Hi! I'm Lumi, your voice assistant.<br>I'd like to guide you through a quick experiment that shouldn't take longer than 15 minutes. <br><br>Here's what to expect:<br><br>Firsty, imagine yourself relaxing at your own home, using your voice to get things done.<br>Secondly,There will be three tasks in total, Lumi is here to assist you.<br>After every task, you'll be asked to fill out a short survey, please use mouse to click the survey button when needed<br>Finally, you'll have the chance to record your overall experience about the experiment.<br><br>Let's Begin!";
+    textElement.innerHTML = "Hi! I'm Lumi, your voice assistant.<br>I'd like to guide you through a quick experiment that shouldn't take longer than 15 minutes. <br><br>Here's what to expect:<br><br>Firstly, imagine yourself relaxing at your own home, using your voice to get things done.<br>Secondly,There will be three two-minute tasks in total, Lumi is here to assist you.<br>After every task, you'll be asked to fill out a short survey. Please use mouse to click buttons when needed<br>Finally, you'll have the chance to record your overall experience about the experiment.<br><br>Click the [Next Task] button and Let's Begin!";
     textElement.style.textAlign = "justify";
     textElement.style.fontSize = "25px";
     textElement.style.fontFamily = "San Francisco, system-ui";
@@ -248,6 +246,12 @@ function processVoice() {
         window.location.href = "/survey_weather";
     }
 
+    function goToWeatherPage() {
+        window.location.href = "/weather.html";
+    }
+
+
+
    function processAlarm() {
     fetch('/process_alarm_task', {
         method: 'POST'
@@ -302,7 +306,7 @@ function processVoice() {
 
 
     // 设置保存文件的时间，分*秒*毫秒
-    setInterval(saveDataToFile, 5 * 60 * 1000);
+    setInterval(saveDataToFile, 15 * 60 * 1000);
 
     // 在需要保存数据时调用此函数
     function saveDataToFile() {

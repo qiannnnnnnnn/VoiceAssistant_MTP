@@ -8,9 +8,35 @@
 <body>
     <h1>Record Feedback</h1>
     <p id="feedbackMessage" >How do you like Lumi?</p>
-    <button id="startFeedbackButton" class="startFeedbackButton" onclick="countdown()">Start Feedback</button>
-    <p id="countdown">You can record your feedback in <span id="countdownValue">30</span> seconds</p> <!-- 倒计时显示器 -->
+    <!-- face detection    style="display:none;" -->
+    <video id="video" width="120" height="90" autoplay muted style="display:none;" ></video>
+    <button id="startFeedbackButton" class="startFeedbackButton">Click to record your feedback</button>
+    <p id="countdown">You can record your feedback in <span id="countdownValue">60</span> seconds</p> <!-- 倒计时显示器 -->
 
+    <script>
+        function countdown() {
+            var seconds = 60;
+            var countdownDisplay = document.getElementById('countdownValue');
+
+            var countdownInterval = setInterval(function() {
+                seconds--;
+                countdownDisplay.textContent = seconds;
+
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownDisplay.textContent = 'Time up!';
+                }
+            }, 1000);
+        }
+
+        // 确保在 DOMContentLoaded 事件之后绑定按钮的点击事件
+        document.addEventListener("DOMContentLoaded", function() {
+            var startFeedbackButton = document.getElementById('startFeedbackButton');
+            startFeedbackButton.addEventListener("click", function() {
+                countdown();
+            });
+        });
+    </script>
     <script src="/static/js/script.js"></script>
 </body>
 </html>

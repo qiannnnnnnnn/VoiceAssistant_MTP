@@ -1,19 +1,13 @@
 import speech_recognition as sr
 from gtts import gTTS
 import os
-import subprocess
 from elevenlabs.client import ElevenLabs
-import requests
-from flask import redirect, url_for
 import uuid
 import time
-
-from pydub.playback import play
+import random
 import pygame
 from io import BytesIO
 
-
-# 改好了暂时，Neutral voice
 
 # Initialize the speech recognition
 recognizer = sr.Recognizer()
@@ -22,8 +16,6 @@ recognizer = sr.Recognizer()
 client = ElevenLabs(
     api_key="7fd8bbe38e87e100e7a0991940b869d8",  # Replace with your API key
 )
-
-
 
 
 
@@ -81,9 +73,6 @@ def speak(text):
     os.system("mpg321 output.mp3")
 
 
-import random
-
-
 def listen():
     """Records audio from the microphone, saves it to a file, and performs speech recognition."""
     
@@ -127,8 +116,6 @@ def listen():
         return "", ""
 
 
-
-
 def news_dialogue(voice):                                                                                                                                                                                                           
     # save all user's voice
     os.makedirs("dialogues_news", exist_ok=True)
@@ -141,7 +128,7 @@ def news_dialogue(voice):
     os.makedirs(dialog_folder_path, exist_ok=True)
 
     start_time = time.time()
-    while time.time() - start_time < 150:  # Interact time, in seconds
+    while time.time() - start_time < 120:  # Interact time, in seconds
         # Listen for user input
         input_text, input_audio_file = listen()
 
@@ -152,18 +139,22 @@ def news_dialogue(voice):
             os.rename(input_audio_file, unique_input_filename)
 
         # Check if user says news/podcast
-        if "news" in input_text:
-            play_generated_audio("In today's headlines, tensions escalated in the Middle East "
-                                 "as diplomatic talks broke down between neighboring nations. "
-                                 "Meanwhile, scientists announced a groundbreaking discovery in renewable energy technology,"
-                                 " offering hope for a greener future. In other news, "
-                                 "the stock market saw significant fluctuations, prompting investors to reassess their portfolios. "
-                                 "Stay tuned for further updates on these developing stories and more.",voice)
-        elif "pause" in input_text:
-            play_generated_audio(
-                "Pausing the current news update. Stay tuned as we'll resume shortly after this brief pause.",voice)
+        if "update" in input_text:
+            play_generated_audio("he race for the Premier League title is heating up!"
+                                 " Manchester City gained an advantage after both Arsenal and Liverpool lost their matches in April."
+                                 "However, with several games remaining in the season, the title race is far from over."
+                                 " Arsenal and Liverpool are still very much in contention.",voice)
         elif "next" in input_text:
-            play_generated_audio("Moving on to the next news segment. Stay informed with our continuous coverage.",voice)
+            play_generated_audio("Moving on to the next news segment. "
+                                 "Emma Raducanu is set to face Angelique Kerber in the first round of the Stuttgart Open after her heroics in the BJK Cup.",voice)
+        elif "skip" in input_text:
+            play_generated_audio(
+                "Skipping this news segment. Stay tuned as we'll resume shortly after this brief pause.",voice)
+        elif "continue" in input_text:
+            play_generated_audio(" Kerber, at 35, will leverage her experience on clay courts, "
+                                 "a surface she's found success on in the past, winning the Stuttgart Open twice.  "
+                                 "Raducanu, at just 19, brings the excitement of a rising star, "
+                                 "hungry to prove herself on different surfaces after her US Open triumph on hard courts..",voice)
         elif "thank" in input_text:
             play_generated_audio("You're welcome. What else can I do for you?",voice)
         else:
@@ -193,9 +184,29 @@ def news_task():
     news_dialogue(voice)
 
     # Goodbye message
-    play_generated_audio("This round is done, please fill in the survey",voice)
+    play_generated_audio("This round is done, please click the go to survey button to fill in the survey",voice)
 
 
 
 if __name__ == "__main__":
     news_task()
+
+
+'''
+  # Cloned voice
+    voice = client.clone(
+        name="Participant",
+        description="Participant's cloned voice ",
+        files=["recordings/recorded_audio.wav"],  # the recordfile, need to change the record loop
+    )
+    # Neutral Voice
+    # voice = "BzGBcwax6fZdL0A0cNrE"
+    voice = "bTs5u126Wd7y2pljrAbG"
+
+    # Voice 50%
+    voice = client.clone(
+        name="Participant_50%",
+        description="Participant's cloned voice, similarity 50%, 4 semitones were changed ",
+        files=["recordings/output_changed.wav"],  # Use the provided audio file path
+    )
+'''

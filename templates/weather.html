@@ -13,20 +13,20 @@
     <!-- 闹钟指令文本 -->
     <div id="weatherInstructions">
         <ul>
-            <li>You're required to check weather, you can say:</li>
+            <li>You're required to check weather,  please click the [Start Task] button and you can say:</li>
             <li class="important">"Check weather"</li>
-            <li class="important">"Temperature"</li>
+            <li class="important">"Temperature today"</li>
             <li class="important">"Wind speed"</li>
             <li class="important">"Rain today"</li>
-            <li>......</li>
+            <li class="important">......</li>
         </ul>
     </div>
 
    <!-- face detection    style="display:none;" -->
-    <video id="video" width="120" height="90" autoplay muted style="display:none;"></video>
+    <video id="video" width="120" height="90" autoplay muted  style="display:none;"></video>
 
     <button id="surveyButton_weather" class="surveyButton"  onclick="goToSurveyPage_weather()">Go To Survey</button>
-    <button id="processWeatherButton" class="processButton" onclick="processWeather()">Process Weather Task</button>
+    <button id="processWeatherButton" class="processButton" onclick="processWeather()">Start Task</button>
 
     <script src="/static/js/face-api.min.js"></script>
     <script src="/static/js/script.js"></script>
