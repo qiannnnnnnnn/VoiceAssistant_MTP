@@ -1,22 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style.css">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+
 </head>
 <body>
-    <h1>Survey</h1>
-    <p>Thank you for participating in our survey!（2/4）</p>
-    <p>Please click the button below to complete the survey:</p>
-    <a href="https://htionline.tue.nl/limesurvey/index.php/627987?lang=en" target="_blank">
-        <button id="surveyButton" class="surveyButton">Take the Survey</button>
-    </a>
-    <a href="devices.html">
-        <button  id="nextButton_devices" class="nextTaskButton">Next Task</button>
-    </a>
+
+    <!-- face detection    style="display:none;" -->
+    <video id="video" width="120" height="90" autoplay muted></video>
+    <video id="player" width="640" height="390" controls>
+        <source src="/static/image/cat.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <button id="replayBtn" style="display: none;">Replay</button>
+
+
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/face-api.min.js"></script>
+    <script>
+      var player = document.getElementById('player');
+      var replayBtn = document.getElementById('replayBtn');
+
+      // Function to play or pause the video
+      function playPauseVideo() {
+        if (player.paused) {
+          player.play(); // If the video is paused, play it
+        } else {
+          player.pause(); // If the video is playing, pause it
+        }
+      }
+
+      // Function to toggle video playback every 3 seconds
+      function togglePlayback() {
+        setTimeout(function() {
+          playPauseVideo(); // Pause the video after 3 seconds
+          setTimeout(function() {
+            playPauseVideo(); // Resume playing after 3 seconds
+            togglePlayback(); // Call the function again for next cycle
+          }, 3000); // Wait for 3 seconds before resuming playback
+        }, 3000); // Wait for 3 seconds before pausing the video
+      }
+
+      // Start the playback toggle
+      togglePlayback();
+
+      // Show the replay button when video ends
+      player.addEventListener('ended', function() {
+        replayBtn.style.display = 'block'; // Display the replay button
+      });
+
+      // Function to handle replay button click
+      replayBtn.addEventListener('click', function() {
+        // Replace 'your_link_here' with the actual URL
+        window.location.href = 'your_link_here';
+      });
+    </script>
+
 </body>
 </html>
+

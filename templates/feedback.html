@@ -7,9 +7,18 @@
 </head>
 <body>
     <h1>Record Feedback</h1>
-    <p id="feedbackMessage" >How do you like Lumi?</p>
+     <div id="feedbackMessage">
+        <ul>
+            <li class="important">How do you like Lumi?</li>
+            <li>How does Lumi's voice compare to other voice assistants you've used?</li>
+            <li>Could you describe how you experienced Lumi's voice in each round. For example, did the voice come across as natural and human-like, or more like robotic and artificial?</li>
+            <li>Please tell us out loud about these experiences</li>
+        </ul>
+    </div>
+
+
     <!-- face detection    style="display:none;" -->
-    <video id="video" width="120" height="90" autoplay muted style="display:none;" ></video>
+    <video id="video" width="120" height="90" autoplay muted style="display:none;"></video>
     <button id="startFeedbackButton" class="startFeedbackButton">Click to record your feedback</button>
     <p id="countdown">You can record your feedback in <span id="countdownValue">60</span> seconds</p> <!-- 倒计时显示器 -->
 
@@ -17,22 +26,26 @@
         function countdown() {
             var seconds = 60;
             var countdownDisplay = document.getElementById('countdownValue');
+            var startFeedbackButton = document.getElementById('startFeedbackButton');
 
-            var countdownInterval = setInterval(function() {
+            startFeedbackButton.disabled = true; // 禁用按钮
+
+            var countdownInterval = setInterval(function () {
                 seconds--;
                 countdownDisplay.textContent = seconds;
 
                 if (seconds <= 0) {
                     clearInterval(countdownInterval);
                     countdownDisplay.textContent = 'Time up!';
+                    startFeedbackButton.disabled = false; // 启用按钮
                 }
             }, 1000);
         }
 
         // 确保在 DOMContentLoaded 事件之后绑定按钮的点击事件
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             var startFeedbackButton = document.getElementById('startFeedbackButton');
-            startFeedbackButton.addEventListener("click", function() {
+            startFeedbackButton.addEventListener("click", function () {
                 countdown();
             });
         });
@@ -40,3 +53,6 @@
     <script src="/static/js/script.js"></script>
 </body>
 </html>
+
+
+<!--添加按钮点击后即失效，0419； 修改了问题 -->

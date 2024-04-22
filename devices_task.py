@@ -101,7 +101,7 @@ def devices_dialogue(voice):
     os.makedirs(dialog_folder_path, exist_ok=True)
 
     start_time = time.time()
-    while time.time() - start_time < 120:  # Interact time, in seconds
+    while time.time() - start_time < 100:  # Interact time, in seconds
         # Listen for user input
         input_text, input_audio_file = listen()
 
@@ -113,26 +113,35 @@ def devices_dialogue(voice):
 
         # Check if user says news/podcast
         if "turn" in input_text:
-            play_generated_audio("Alright, I've turned off the lights in the bedroom,have a good night. "
-                                 "If you need, you can also ask me to control other devices", voice)
+            play_generated_audio("Alright, The bedroom lights are off now, "
+                                 "setting a cozy vibe for your night's rest."
+                                 " If you need more help with other devices around your home, "
+                                 "just let me know. Wishing you a tranquil and refreshing night ahead!", voice)
         elif "adjust" in input_text:
-            play_generated_audio("Got it. The living room temperature has been set to 21 degrees. "
-                                 "Let me know if you need any further adjustments or if there's anything else I can assist you with.",
+            play_generated_audio("Understood, the living room temperature has been adjusted to ensure your comfort. "
+                                 "If there's anything else you want to adjust or if there are other tasks you have in mind,"
+                                 " just let me know. I'm here to assist you with anything you need, anytime.",
                                  voice)
-        elif "set" in input_text:
+        elif "alarm" in input_text:
             play_generated_audio(
-                "Alarm successfully set. Get ready for a productive day ahead!", voice)
+                "Your alarm is all set and ready to kickstart your day with productivity!"
+                " If you need assistance or reminders as you go about your day, don't hesitate to reach out. "
+                "I'm here to support you at every turn, ensuring a smooth and successful day ahead!", voice)
         elif "lock" in input_text:
-            play_generated_audio("Front door successfully locked. Your home is now secure."
-                                 "If you need to grant access to someone or perform any other tasks, feel free to let me know.",
+            play_generated_audio("The front door is securely locked, ensuring your home's safety and peace of mind. "
+                                 "If you need to grant access to someone or have any other tasks in mind, don't hesitate to reach out."
+                                 " I'm available round the clock to assist you with anything you need, whenever you need it.",
                                  voice)
         elif "thank" in input_text:
             play_generated_audio("You're welcome. What else can I do for you?", voice)
+        elif "stop" in input_text:
+            play_generated_audio("Okay, stopping now.", voice)
+            return  # 终止函数执行
         else:
             play_generated_audio("Sorry,I didn't catch that. Could you please ask a question about the devices at your home?", voice)
 
     # Prompt the user for continuation
-    play_generated_audio("Do you want to control other devices?", voice)
+    play_generated_audio("Is there anything else I can do for you?", voice)
 
     # Listen for user response
     text, audio_file = listen()
@@ -148,8 +157,8 @@ def devices_task():
     # Voice 50%
     voice = client.clone(
         name="Participant_50%",
-        description="Participant's cloned voice, similarity 50%, 4 semitones were changed ",
-        files=["recordings/output_changed.wav"],  # Use the provided audio file path
+        description="Participant's cloned voice, similarity 50%, 2 semitones were changed ",
+        files=["recordings/pitch_changed.wav"],  # Use the provided audio file path
     )
     # Welcome message
     play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?",voice)
@@ -180,6 +189,6 @@ if __name__ == "__main__":
     voice = client.clone(
         name="Participant_50%",
         description="Participant's cloned voice, similarity 50%, 4 semitones were changed ",
-        files=["recordings/output_changed.wav"],  # Use the provided audio file path
+        files=["recordings/pitch_changed.wav"],  # Use the provided audio file path
     )
 '''

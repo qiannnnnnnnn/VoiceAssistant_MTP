@@ -12,7 +12,7 @@ from io import BytesIO
 # Initialize the speech recognition
 recognizer = sr.Recognizer()
 
-# call elevenlab Api
+# call elevenlabs Api
 client = ElevenLabs(
     api_key="7fd8bbe38e87e100e7a0991940b869d8",  # Replace with your API key
 )
@@ -44,23 +44,31 @@ def play_generated_audio(text, voice):
 """
 
 #pygame 
-def play_generated_audio(text, voice):
+def play_generated_audio(text, voice, volume=1.0):
     try:
         audio_generator = client.generate(text=text, voice=voice)
 
         audio_bytes = b"".join(audio_generator)
-        #load audio
-        pygame.mixer.init()
-        pygame.mixer.music.load(BytesIO(audio_bytes))
 
-        #play
+        # Initialize Pygame
+        pygame.mixer.init()
+
+        # Load audio
+        audio_stream = BytesIO(audio_bytes)
+        pygame.mixer.music.load(audio_stream)
+
+        # Set volume
+        pygame.mixer.music.set_volume(volume)
+
+        # Play audio
         pygame.mixer.music.play()
 
-        #wait for the audio to finish
+        # Wait for the audio to finish
         while pygame.mixer.music.get_busy():
             pygame.time.Clock().tick(10)
+
     except Exception as e:
-        print("Eror while playing audio:",e)
+        print("Error while playing audio:", e)
 
 
 def tts_init(text, lang="en"):
@@ -71,6 +79,7 @@ def speak(text):
     engine = tts_init(text)
     engine.save("output.mp3")
     os.system("mpg321 output.mp3")
+
 
 
 def listen():
@@ -128,7 +137,7 @@ def news_dialogue(voice):
     os.makedirs(dialog_folder_path, exist_ok=True)
 
     start_time = time.time()
-    while time.time() - start_time < 120:  # Interact time, in seconds
+    while time.time() - start_time < 100:  # Interact time, in seconds
         # Listen for user input
         input_text, input_audio_file = listen()
 
@@ -140,28 +149,35 @@ def news_dialogue(voice):
 
         # Check if user says news/podcast
         if "update" in input_text:
-            play_generated_audio("he race for the Premier League title is heating up!"
+            play_generated_audio("Updating the news.The race for the Premier League football title is heating up!"
                                  " Manchester City gained an advantage after both Arsenal and Liverpool lost their matches in April."
-                                 "However, with several games remaining in the season, the title race is far from over."
-                                 " Arsenal and Liverpool are still very much in contention.",voice)
+                                 "However, with several games remaining in the season, the title race is far from over. "
+                                 "Arsenal and Liverpool are still very much in contention.",voice,volume=0.3)
         elif "next" in input_text:
-            play_generated_audio("Moving on to the next news segment. "
-                                 "Emma Raducanu is set to face Angelique Kerber in the first round of the Stuttgart Open after her heroics in the BJK Cup.",voice)
+            play_generated_audio("Moving on to the next news segment. Emma Raducanu is set to face Angelique Kerber in the first round of the Stuttgart Open after her heroics in the Billy Jean King Cup. "
+                                 "Kerber, at age 35, will leverage her experience on clay courts, winning the Stuttgart Open twice. "
+                                 "Raducanu, aged at just 19,  hungry to prove herself on different surfaces after her US Open triumph on hard court",voice,volume=0.3)
         elif "skip" in input_text:
             play_generated_audio(
-                "Skipping this news segment. Stay tuned as we'll resume shortly after this brief pause.",voice)
+                "Skipping this news segment. Tom Pidcock emerged victorious in a thrilling sprint finish at the Amstel Gold Race. "
+                "For cycling fans, this win might hold extra weight. Recall that Pidcock finished a heartbreaking second at the 2021 Amstel Gold Race, "
+                "losing in a photo finish to Wout van Aert. "
+                "This year's victory can be seen as sweet redemption, proving his dominance on the rolling hills of Limburg.",voice,volume=0.3)
         elif "continue" in input_text:
-            play_generated_audio(" Kerber, at 35, will leverage her experience on clay courts, "
-                                 "a surface she's found success on in the past, winning the Stuttgart Open twice.  "
-                                 "Raducanu, at just 19, brings the excitement of a rising star, "
-                                 "hungry to prove herself on different surfaces after her US Open triumph on hard courts..",voice)
+            play_generated_audio("Judd Trump says anything other than winning the 2024 World Championship would be a failure, "
+                                 "but thinks Ronnie O'Sullivan is the tournament favourite."
+                                 "World number one O'Sullivan is looking to win the Crucible title for a record-breaking eighth time while Trump, "
+                                 "ranked second, won the event in 2019.",voice,volume=0.3)
         elif "thank" in input_text:
-            play_generated_audio("You're welcome. What else can I do for you?",voice)
+            play_generated_audio("You're welcome. What else can I do for you?",voice,volume=0.3)
+        elif "stop" in input_text:
+            play_generated_audio("Okay, stopping now.", voice, volume=0.3)
+            return  # 终止函数执行
         else:
-            play_generated_audio("Sorry,I didn't catch that. Could you please ask a question about the news?",voice)
+            play_generated_audio("Sorry,I didn't catch that. Could you please ask a question about the sports news?",voice,volume=0.3)
 
     # Prompt the user for continuation
-    play_generated_audio("Do you want to continue with another news action?",voice)
+    play_generated_audio("Is there anything else I can do for you?",voice,volume=0.3)
 
     # Listen for user response
     text, audio_file = listen()
@@ -170,7 +186,7 @@ def news_dialogue(voice):
     if "yes" in text or "continue" in text:
         news_dialogue(voice)
     else:
-        play_generated_audio("Okay,have a nice day",voice)
+        play_generated_audio("Okay,have a nice day",voice,volume=0.3)
 
 def news_task():
     # Neural Voice
@@ -178,13 +194,13 @@ def news_task():
     voice = "bTs5u126Wd7y2pljrAbG"
 
     # Welcome message
-    play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?",voice)
+    play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?",voice, volume=0.3)
 
     # Proceed with music-related dialogue
     news_dialogue(voice)
 
     # Goodbye message
-    play_generated_audio("This round is done, please click the go to survey button to fill in the survey",voice)
+    play_generated_audio("This round is done, please click the go to survey button to fill in the survey",voice,volume=0.3)
 
 
 
@@ -207,6 +223,7 @@ if __name__ == "__main__":
     voice = client.clone(
         name="Participant_50%",
         description="Participant's cloned voice, similarity 50%, 4 semitones were changed ",
-        files=["recordings/output_changed.wav"],  # Use the provided audio file path
+        files=["recordings/pitch_changed.wav"],  # Use the provided audio file path
     )
 '''
+

@@ -145,15 +145,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
-
-
     function startRecording() {
     console.log("Recording started.");
 
     var textElement = document.createElement('p');
     textElement.id = "textElement"; // 设置文本元素的 ID
-    textElement.innerHTML = "Hi! I'm Lumi, your voice assistant.<br>I'd like to guide you through a quick experiment that shouldn't take longer than 15 minutes. <br><br>Here's what to expect:<br><br>Firstly, imagine yourself relaxing at your own home, using your voice to get things done.<br>Secondly,There will be three two-minute tasks in total, Lumi is here to assist you.<br>After every task, you'll be asked to fill out a short survey. Please use mouse to click buttons when needed<br>Finally, you'll have the chance to record your overall experience about the experiment.<br><br>Click the [Next Task] button and Let's Begin!";
+    textElement.innerHTML = "<span style='color: navy;'>The following text is an introduction of Lumi. Please read this text out loud, while we record your voice to get a sense of your neutral state.</span><br><br>Hi! I'm Lumi, your voice assistant.<br>I'd like to guide you through a quick experiment that shouldn't take longer than 15 minutes. <br>Here's what to expect:<br>Firstly, imagine yourself relaxing at your own home, using your voice to get things done.<br>Secondly,there will be three two-minute tasks in total, Lumi is here to assist you.<br>After every task, you'll be asked to fill out a short survey. Please use mouse to click buttons when needed<br>Finally, you'll have the chance to record your overall experience about the experiment.<br>" +
+        "<br><span style='color: navy;'>Click the [Next Task] button and Let's Begin!</span>";
     textElement.style.textAlign = "justify";
     textElement.style.fontSize = "25px";
     textElement.style.fontFamily = "San Francisco, system-ui";
@@ -161,6 +159,7 @@ document.addEventListener("DOMContentLoaded", function() {
     textElement.style.margin = "0 auto";
     textElement.style.color = "#666";
     document.body.appendChild(textElement);
+
 
     //save as a document
 
@@ -306,7 +305,7 @@ function processVoice() {
 
 
     // 设置保存文件的时间，分*秒*毫秒
-    setInterval(saveDataToFile, 15 * 60 * 1000);
+    setInterval(saveDataToFile, 10 * 60 * 1000);
 
     // 在需要保存数据时调用此函数
     function saveDataToFile() {

@@ -133,7 +133,7 @@ def weather_dialogue(voice):
     os.makedirs(dialog_folder_path, exist_ok=True)
 
     start_time = time.time()
-    while time.time() - start_time < 120:  # Interact time, in seconds
+    while time.time() - start_time < 100:  # Interact time, in seconds
         # Listen for user input
         input_text, input_audio_file = listen()
 
@@ -144,30 +144,40 @@ def weather_dialogue(voice):
             os.rename(input_audio_file, unique_input_filename)
 
         # Check if user says news/podcast
-        if "check" in input_text:
-            play_generated_audio("Currently checking the weather for Eindhoven. " 
-                                 "It seems to be a beautiful day with plenty of sunshine. "
-                                 "It's perfect weather for wearing light and comfortable clothing. " 
-                                 "You might want to consider outdoor activities such as picnics, walks in the park, or cycling. "
-                                 "Enjoy the lovely weather!", voice)
-        elif "temperature" in input_text:
-            play_generated_audio("The temperature is around 20 degrees Celsius, and there's hardly any wind."
-                                 " It is perfect weather for exploring the city on foot or taking a bike ride. ",
+        if "today" in input_text:
+            play_generated_audio("Currently checking the weather for Eindhoven.The weather this week is not great. "
+                                 "It is relatively cold with about 11 to 13 degrees Celsius."
+                                 "It is cloudy with an occasional light shower, but it does not look like you will need an umbrella."
+                                 " “Do make sure to wear a jacket this week", voice)
+        elif "week" in input_text:
+            play_generated_audio("Next week the temperature will be considerably higher, reaching 17 or 18 degrees Celsius. "
+                                 "It will also be much sunnier, so you might not need to wear your jacket."
+                                 "With all the sunlight until late it might be a perfect week to eat out or have a barbecue."
+                                 "So get those vegetarian or meaty burgers out.",
                                  voice)
-        elif "wind" in input_text:
+        elif "month" in input_text:
             play_generated_audio(
-                "Checking the wind speed.There's hardly any wind. Which making a pleasant and comfortable day to be outdoors", voice)
-        elif "rain" in input_text:
-            play_generated_audio(" Checking rainfall.There is no rainfall today. "
-                                 "And with humidity levels around 50 percent, it's a great day to be outdoors and enjoy the fresh air",
+                "Next month the weather will vary a lot. There will be quite a few rainy days, even some with thunderstorms."
+                "The temperature will be pretty stable, fluctuating between 16 and 19 degrees Celsius."
+                "Depending on the day, you might have really great, or very bad weather."
+                "So do not put away your jacket and umbrella just yet", voice)
+        elif "kingsday" in input_text:
+            play_generated_audio(" I expect good weather on Kingsday. "
+                                 "There is no rain to be expected, and the temperature will reach about 17 degrees Celsius."
+                                 "It might be quite cloudy though, so if you plan to be outside, make sure to take a jacket, because it might feel quite cold still."
+                                 "On the night before, Kingsnight, it is mostly cloudy with a few local rain showers."
+                                 "It will be cold with a maximum of only 5 degrees Celsius",
                                  voice)
         elif "thank" in input_text:
             play_generated_audio("You're welcome. What else can I do for you?", voice)
+        elif "stop" in input_text:
+            play_generated_audio("Okay, stopping now.", voice)
+            return  # 终止函数执行
         else:
             play_generated_audio("Sorry,I didn't catch that. Could you please ask a question about the weather?", voice)
 
     # Prompt the user for continuation
-    play_generated_audio("Do you want to continue with another weather action?", voice)
+    play_generated_audio("Is there anything else I can do for you?", voice)
 
     # Listen for user response
     text, audio_file = listen()
@@ -217,6 +227,6 @@ if __name__ == "__main__":
     voice = client.clone(
         name="Participant_50%",
         description="Participant's cloned voice, similarity 50%, 4 semitones were changed ",
-        files=["recordings/output_changed.wav"],  # Use the provided audio file path
+        files=["recordings/pitch_changed.wav"],  # Use the provided audio file path
     )
 '''

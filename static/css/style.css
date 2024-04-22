@@ -23,6 +23,9 @@ button {
     background-color:#f8df3aff ;
 }
 
+ol {
+    font-size: 25px;
+}
 
 .startButton {
     background-color: #2f2f2f; /* 设置按钮的背景颜色为深灰色 */
@@ -94,10 +97,11 @@ button {
 h1 {
     font-family: 'San Francisco', system-ui;
     color: #423e3eff;
+    font-size: 30px;
 }
 #musicInstructions {
   font-family: 'San Francisco', system-ui;
-  font-size: 30px;  /* Adjust base font size as needed */
+  font-size: 30px;
   text-align: center;
   list-style: none;
   padding: 0;
@@ -171,10 +175,42 @@ h1 {
   list-style: none;
 }
 
+
+#feedbackMessage ul {
+    width: 65%; /* 设置 ul 的宽度，您可以根据需要调整 */
+  margin: 0 auto; /* 水平居中 */
+  padding: 0; /* 清除默认内边距 */
+}
+
+#feedbackMessage li {
+  margin-bottom: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+
+#feedbackMessage {
+  font-family: 'San Francisco', system-ui;
+  font-size: 30px;
+  text-align: left;
+  list-style: none;
+  padding: 0;
+}
+
+
+#countdown {
+  font-family: 'San Francisco', system-ui;
+  font-size: 20px;
+  text-align: center;
+  list-style: none;
+  padding: 0;
+}
+
 /* New style for important instructions */
 .important {
   font-size: 40px;  /* Adjust font size for emphasis */
   font-weight: bold;
+  text-align: center;
 }
 
 
