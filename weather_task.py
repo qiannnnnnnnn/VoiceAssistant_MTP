@@ -161,8 +161,8 @@ def weather_dialogue(voice):
                 "The temperature will be pretty stable, fluctuating between 16 and 19 degrees Celsius."
                 "Depending on the day, you might have really great, or very bad weather."
                 "So do not put away your jacket and umbrella just yet", voice)
-        elif "kingsday" in input_text:
-            play_generated_audio(" I expect good weather on Kingsday. "
+        elif "king" in input_text:
+            play_generated_audio(" I expect good weather on Kings day. "
                                  "There is no rain to be expected, and the temperature will reach about 17 degrees Celsius."
                                  "It might be quite cloudy though, so if you plan to be outside, make sure to take a jacket, because it might feel quite cold still."
                                  "On the night before, Kingsnight, it is mostly cloudy with a few local rain showers."

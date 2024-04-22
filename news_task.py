@@ -148,26 +148,26 @@ def news_dialogue(voice):
             os.rename(input_audio_file, unique_input_filename)
 
         # Check if user says news/podcast
-        if "update" in input_text:
+        if "football" in input_text:
             play_generated_audio("Updating the news.The race for the Premier League football title is heating up!"
                                  " Manchester City gained an advantage after both Arsenal and Liverpool lost their matches in April."
                                  "However, with several games remaining in the season, the title race is far from over. "
                                  "Arsenal and Liverpool are still very much in contention.",voice,volume=0.3)
-        elif "next" in input_text:
+        elif "tennis" in input_text:
             play_generated_audio("Moving on to the next news segment. Emma Raducanu is set to face Angelique Kerber in the first round of the Stuttgart Open after her heroics in the Billy Jean King Cup. "
                                  "Kerber, at age 35, will leverage her experience on clay courts, winning the Stuttgart Open twice. "
                                  "Raducanu, aged at just 19,  hungry to prove herself on different surfaces after her US Open triumph on hard court",voice,volume=0.3)
-        elif "skip" in input_text:
+        elif "marathon" in input_text:
             play_generated_audio(
-                "Skipping this news segment. Tom Pidcock emerged victorious in a thrilling sprint finish at the Amstel Gold Race. "
-                "For cycling fans, this win might hold extra weight. Recall that Pidcock finished a heartbreaking second at the 2021 Amstel Gold Race, "
-                "losing in a photo finish to Wout van Aert. "
-                "This year's victory can be seen as sweet redemption, proving his dominance on the rolling hills of Limburg.",voice,volume=0.3)
-        elif "continue" in input_text:
-            play_generated_audio("Judd Trump says anything other than winning the 2024 World Championship would be a failure, "
-                                 "but thinks Ronnie O'Sullivan is the tournament favourite."
-                                 "World number one O'Sullivan is looking to win the Crucible title for a record-breaking eighth time while Trump, "
-                                 "ranked second, won the event in 2019.",voice,volume=0.3)
+                " United co-owner Sir Jim Ratcliffe competed in two separate races on Sunday."
+                "The 71-year-old lined up for his eighth London Marathon in the morning and then faced a race against time to watch his side face Coventry in the FA Cup semi-final at Wembley in the afternoon."
+                "The British billionaire is an avid runner and has completed more than 30 marathons worldwide, "
+                "while his chemical group Ineos supported Kenya's Eliud Kipchoge in his successful bid to become the first person to break the two-hour mark for a marathon in October 2019.", voice, volume=0.3)
+        elif "golf" in input_text:
+            play_generated_audio("Nelly Korda equalled an LPGA record by winning her fifth tournament in a row as she claimed "
+                                 "the first women's major of the year at the Chevron Championship.Her three-under 69 on a gusty day "
+                                 "in Texas saw her finish on 13 under to win her second major by two shots.",voice,volume=0.3)
+
         elif "thank" in input_text:
             play_generated_audio("You're welcome. What else can I do for you?",voice,volume=0.3)
         elif "stop" in input_text:

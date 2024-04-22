@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 定义一个全局变量，用来保存所有页面的表情数据
     let allFacialData = [];
+    let startTime = null;
 
     if (listenButton) {
         listenButton.addEventListener('click', async () => {
@@ -142,6 +143,11 @@ document.addEventListener("DOMContentLoaded", function() {
       }, 1000) //修改表情识别间隔
     });
 
+      window.addEventListener('beforeunload', function(event) {
+        saveDataToFile();
+    });
+
+
 
 
 
@@ -150,10 +156,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var textElement = document.createElement('p');
     textElement.id = "textElement"; // 设置文本元素的 ID
-    textElement.innerHTML = "<span style='color: navy;'>The following text is an introduction of Lumi. Please read this text out loud, while we record your voice to get a sense of your neutral state.</span><br><br>Hi! I'm Lumi, your voice assistant.<br>I'd like to guide you through a quick experiment that shouldn't take longer than 15 minutes. <br>Here's what to expect:<br>Firstly, imagine yourself relaxing at your own home, using your voice to get things done.<br>Secondly,there will be three two-minute tasks in total, Lumi is here to assist you.<br>After every task, you'll be asked to fill out a short survey. Please use mouse to click buttons when needed<br>Finally, you'll have the chance to record your overall experience about the experiment.<br>" +
-        "<br><span style='color: navy;'>Click the [Next Task] button and Let's Begin!</span>";
+    textElement.innerHTML = "<span style='color: navy;'>The following text is an introduction of Lumi. Please read this text out loud, while we record your voice to get a sense of your neutral state.</span><br><br>Hi! I'm Lumi, your voice assistant.<br>I'd like to guide you through a quick experiment that shouldn't take longer than 15 minutes. <br>Here's what to expect:<br>Firstly, imagine yourself relaxing at your own home, using your voice to get things done.<br>Secondly,there will be three two-minute tasks in total, Lumi is here to assist you, and you can say 'stop' during each task to terminate the task.<br>After every task, you will be asked to fill out a short survey. <br>Finally, you'll have the chance to record your overall experience about the experiment.<br>You are free to leave the cubicle when you are finished.<br><br><span style='color: navy;'>Click the [Next Task] button and Let's Begin!</span>";
     textElement.style.textAlign = "justify";
-    textElement.style.fontSize = "25px";
+    textElement.style.fontSize = "22px";
     textElement.style.fontFamily = "San Francisco, system-ui";
     textElement.style.maxWidth = "600px";
     textElement.style.margin = "0 auto";
@@ -305,29 +310,34 @@ function processVoice() {
 
 
     // 设置保存文件的时间，分*秒*毫秒
-    setInterval(saveDataToFile, 10 * 60 * 1000);
+    //setInterval(saveDataToFile, 1 * 60 * 1000);
 
     // 在需要保存数据时调用此函数
-    function saveDataToFile() {
-        // 将全局数据数组转换为 JSON 字符串
-        const jsonData = JSON.stringify(allFacialData);
-
-        // 创建一个 Blob 对象，用于保存 JSON 数据
-        const blob = new Blob([jsonData], { type: 'application/json' });
-
-        // 创建一个下载链接，并设置相关属性
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'facial_data.json';
-
-        // 模拟点击下载链接
-        a.click();
-
-        // 释放 URL 对象
-        URL.revokeObjectURL(url);
+   function saveDataToFile() {
+        if (startTime) {
+            const endTime = Date.now();
+            const elapsedTime = endTime - startTime;
+            // 将全局数据数组转换为 JSON 字符串
+            const jsonData = JSON.stringify(allFacialData);
+            // 创建一个 Blob 对象，用于保存 JSON 数据
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            // 创建一个下载链接，并设置相关属性
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'f_data.json';
+            // 模拟点击下载链接
+            a.click();
+            // 释放 URL 对象
+            URL.revokeObjectURL(url);
+            // 重置起始时间和数据数组
+            startTime = null;
+            allFacialData = [];
+        }
     }
 
+    // 记录网页打开时的时间
+    startTime = Date.now();
 
 });
 
