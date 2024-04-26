@@ -14,7 +14,7 @@ recognizer = sr.Recognizer()
 
 # call elevenlabs Api
 client = ElevenLabs(
-    api_key="7fd8bbe38e87e100e7a0991940b869d8",  # Replace with your API key
+    api_key="59cb581fecab89d49359c7c0c1fa5cf5",  # Replace with your API key
 )
 
 
@@ -191,7 +191,7 @@ def news_dialogue(voice):
 def news_task():
     # Neural Voice
     #voice = "BzGBcwax6fZdL0A0cNrE"
-    voice = "bTs5u126Wd7y2pljrAbG"
+    voice = "b9XTyXzhADeDgNfqF5P5"
 
     # Welcome message
     play_generated_audio("Hello, I am your voice assistant Lumi. How can I assist you today?",voice, volume=0.3)

@@ -13,7 +13,7 @@ recognizer = sr.Recognizer()
 
 # call elevenlab Api
 client = ElevenLabs(
-    api_key="7fd8bbe38e87e100e7a0991940b869d8",  # Replace with your API key
+    api_key="59cb581fecab89d49359c7c0c1fa5cf5", # Replace with your API key
 )
 
 # pygame
@@ -117,7 +117,7 @@ def devices_dialogue(voice):
                                  "setting a cozy vibe for your night's rest."
                                  " If you need more help with other devices around your home, "
                                  "just let me know. Wishing you a tranquil and refreshing night ahead!", voice)
-        elif "adjust" in input_text:
+        elif "temperature" in input_text:
             play_generated_audio("Understood, the living room temperature has been adjusted to ensure your comfort. "
                                  "If there's anything else you want to adjust or if there are other tasks you have in mind,"
                                  " just let me know. I'm here to assist you with anything you need, anytime.",

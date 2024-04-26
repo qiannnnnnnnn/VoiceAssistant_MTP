@@ -8,7 +8,6 @@ import os
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 
-
 # Add questionnaire
 @app.route('/survey')
 def survey():

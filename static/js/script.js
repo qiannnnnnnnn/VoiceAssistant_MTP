@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let allFacialData = [];
     let startTime = null;
 
+
     if (listenButton) {
         listenButton.addEventListener('click', async () => {
             const response = await fetch('/api/listen');
@@ -124,24 +125,24 @@ document.addEventListener("DOMContentLoaded", function() {
       )
     }
 
-    video.addEventListener('play', () => {
-      const canvas = faceapi.createCanvasFromMedia(video)
-      document.body.append(canvas)
-      const displaySize = { width: video.width, height: video.height }
-      faceapi.matchDimensions(canvas, displaySize)
-      setInterval(async () => {
+   video.addEventListener('play', () => {
+    //const canvas = faceapi.createCanvasFromMedia(video)
+    //document.body.append(canvas)
+    const displaySize = { width: video.width, height: video.height }
+    //faceapi.matchDimensions(canvas, displaySize)
+    setInterval(async () => {
         const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
         const resizedDetections = faceapi.resizeResults(detections, displaySize)
-        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-        //faceapi.draw.drawDetections(canvas, resizedDetections)
-        //faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-        faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+        //canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+        //faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+
         // 将识别到的表情数据添加到全局数组中
-          const timestamp = Date.now();
-          const facialData = { timestamp, expressions: resizedDetections.map(det => det.expressions) };
-          allFacialData.push(facialData);
-      }, 1000) //修改表情识别间隔
+        const timestamp = Date.now();
+        const facialData = { timestamp, expressions: resizedDetections.map(det => det.expressions) };
+        allFacialData.push(facialData);
+    }, 1000); // 每 10 秒保存一次数据
     });
+
 
       window.addEventListener('beforeunload', function(event) {
         saveDataToFile();
