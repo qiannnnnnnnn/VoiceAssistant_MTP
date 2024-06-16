@@ -13,7 +13,7 @@ recognizer = sr.Recognizer()
 
 # call elevenlab Api
 client = ElevenLabs(
-    api_key="59cb581fecab89d49359c7c0c1fa5cf5", # Replace with your API key
+    api_key="59cb581fecab89d49359c7c0c1fa5cf5",
 )
 
 # pygame

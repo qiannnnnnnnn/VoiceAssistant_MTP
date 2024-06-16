@@ -1,7 +1,7 @@
 import os
 import pyaudio
 import wave
-import subprocess
+
 
 def record_audio(output_dir, filename, duration=30, sample_rate=44100, channels=1, chunk=1024, format=pyaudio.paInt16):
     audio = pyaudio.PyAudio()
@@ -35,33 +35,16 @@ def record_audio(output_dir, filename, duration=30, sample_rate=44100, channels=
 
     return file_path
 
-'''
-def change_pitch(input_file, output_file, pitch_factor):
-    try:
-        # Use '-y' option to overwrite existing output file
-        subprocess.call(["ffmpeg", "-i", input_file, "-af", "rubberband=pitch={}".format(pitch_factor), "-y", output_file])
-        return output_file
-    except Exception as e:
-        print("Error occurred while changing pitch:", e)
-        return None
-'''
-
 from pydub import AudioSegment
 
 def change_pitch(input_file, output_file, pitch_factor):
     try:
-        # 使用 Pydub 加载音频文件
         audio = AudioSegment.from_file(input_file)
-
-        # 计算半音数目的变换量
         semitone_shift = pitch_factor * 100
 
-        # 使用 pydub.effects.pitch_shift 函数来改变音调
         pitched_audio = audio._spawn(audio.raw_data, overrides={
             "frame_rate": int(audio.frame_rate * (2 ** (semitone_shift / 1200.0)))
         })
-
-        # 保存修改后的音频文件
         pitched_audio.export(output_file, format="wav")
 
         return output_file

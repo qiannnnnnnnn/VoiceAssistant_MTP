@@ -16,33 +16,6 @@ recognizer = sr.Recognizer()
 client = ElevenLabs(
     api_key="59cb581fecab89d49359c7c0c1fa5cf5",  # Replace with your API key
 )
-
-
-
-"""
-def play_generated_audio(text, voice):
-    try:
-        audio_generator = client.generate(text=text, voice=voice)
-
-        # Use subprocess.Popen() to play the generated audio
-        #ffplay_process = subprocess.Popen(["ffplay", "vn", "-"], stdin=subprocess.PIPE,
-                                         # stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        ffplay_command = ["ffplay","-autoexit","-nodisp","-i","pipe:0"]
-        ffplay_process = subprocess.Popen(ffplay_command,stdin=subprocess.PIPE,
-                                          stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
-                                          shell=True)
-        
-        # Write audio stream to ffplay process's standard input
-        for chunk in audio_generator:
-            ffplay_process.stdin.write(chunk)
-
-        # Close standard input, wait for audio playback to finish
-        ffplay_process.stdin.close()
-        ffplay_process.wait()
-    except Exception as e:
-        print("Error while playing audio:", e)
-"""
-
 #pygame 
 def play_generated_audio(text, voice, volume=1.0):
     try:
@@ -227,3 +200,26 @@ if __name__ == "__main__":
     )
 '''
 
+"""
+def play_generated_audio(text, voice):
+    try:
+        audio_generator = client.generate(text=text, voice=voice)
+
+        # Use subprocess.Popen() to play the generated audio
+        #ffplay_process = subprocess.Popen(["ffplay", "vn", "-"], stdin=subprocess.PIPE,
+                                         # stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        ffplay_command = ["ffplay","-autoexit","-nodisp","-i","pipe:0"]
+        ffplay_process = subprocess.Popen(ffplay_command,stdin=subprocess.PIPE,
+                                          stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
+                                          shell=True)
+
+        # Write audio stream to ffplay process's standard input
+        for chunk in audio_generator:
+            ffplay_process.stdin.write(chunk)
+
+        # Close standard input, wait for audio playback to finish
+        ffplay_process.stdin.close()
+        ffplay_process.wait()
+    except Exception as e:
+        print("Error while playing audio:", e)
+"""
