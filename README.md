@@ -19,7 +19,7 @@ This program runs in a Python 3.8 environment.
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/your-username/your-repo-name.git
+    git clone https://github.com/qiannnnnnnnn/VoiceAssistant_MTP.git
     ```
 2. Change to the repository directory:
     ```sh
