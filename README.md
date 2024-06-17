@@ -70,6 +70,3 @@ The web application consists of nine sub-web pages, including interaction and qu
 
 We welcome contributions! Please read our [contributing guidelines](CONTRIBUTING.md) for more details.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
