@@ -15,6 +15,7 @@ Lumi is a web-based voice user interface (VUI) developed with the Flask framewor
 - [License](#license)
 
 ## Installation
+This program runs in a Python 3.8 environment.
 
 1. Clone the repository:
     ```sh
